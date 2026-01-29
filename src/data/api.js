@@ -2,10 +2,17 @@
 // For local development: http://localhost:3000
 // For production: https://your-backend-domain.com
 const LOCAL_BASE_URL = "http://localhost:3000";
-const PRODUCTION_BASE_URL = "https://api.001barbershop.uz";
+const PRODUCTION_BASE_URL = "https://xatna-beck.vercel.app";
 
-// Use environment variable or default to local for development
-const BASE_URL = import.meta.env.VITE_BASE_URL || LOCAL_BASE_URL;
+// Use environment variable or default to production
+const BASE_URL = import.meta.env.VITE_BASE_URL || PRODUCTION_BASE_URL;
+
+// Log for debugging
+console.log('Environment variables:', {
+  VITE_API_BASE_URL: import.meta.env.VITE_API_BASE_URL,
+  VITE_BASE_URL: import.meta.env.VITE_BASE_URL,
+  MODE: import.meta.env.MODE
+});
 
 export const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || `${BASE_URL}/api`;
