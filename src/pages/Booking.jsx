@@ -265,7 +265,7 @@ function Booking() {
             imageUrl = null;
           } else if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('//')) {
             // If image URL is relative, make it absolute using the base URL (images are served from public folder)
-            const BASE_URL_FOR_IMAGES = import.meta.env.VITE_BASE_URL || "http://localhost:3000";
+            const BASE_URL_FOR_IMAGES = import.meta.env.VITE_BASE_URL || "https://xatna-beck.vercel.app";
             if (imageUrl.startsWith('/')) {
               imageUrl = `${BASE_URL_FOR_IMAGES}${imageUrl}`;
             } else {
