@@ -28,11 +28,10 @@ export const POSTS_BASE_URL =
 
 // Socket.IO URL - по умолчанию отдельный WebSocket сервер на порту 3003
 const WS_LOCAL = "http://localhost:3003";
-const WS_PRODUCTION = "https://ws.001barbershop.uz";
+const WS_PRODUCTION = "https://xatna-beck.vercel.app";
 
 export const SOCKET_IO_URL =
-  import.meta.env.VITE_SOCKET_IO_URL || 
-  (import.meta.env.MODE === 'production' ? WS_PRODUCTION : WS_LOCAL);
+  import.meta.env.VITE_SOCKET_IO_URL || WS_PRODUCTION;
 
 export const API_ENDPOINTS = {
   register: "/auth/register",
