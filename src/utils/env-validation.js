@@ -13,8 +13,8 @@ export const getApiBaseUrl = () => {
   if (!apiBaseUrl) {
     const mode = import.meta.env.MODE;
     const defaultUrl = mode === 'production' 
-      ? 'https://xatna-beck.vercel.app/api'
-      : 'https://xatna-beck.vercel.app/api';
+      ? 'http://localhost:3000/api/api'
+      : 'http://localhost:3000/api/api';
     
     console.warn(
       '[Env Validation] ⚠️ VITE_API_BASE_URL is not set. Using default:',
