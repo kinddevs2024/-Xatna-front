@@ -272,7 +272,7 @@ function BroadcastPost() {
                       className={`flex-1 px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer text-center transition-colors ${
                         isSubmitting || formData.image_url
                           ? "border-gray-200 dark:border-gray-600 text-gray-400 dark:text-gray-500 cursor-not-allowed"
-                          : "border-gray-300 dark:border-gray-600 hover:border-barber-olive hover:bg-gray-50 dark:hover:bg-gray-700"
+                          : "border-gray-300 dark:border-gray-600 hover:border-doctor-olive hover:bg-gray-50 dark:hover:bg-gray-700"
                       }`}>
                       {formData.image
                         ? formData.image.name
@@ -323,7 +323,7 @@ function BroadcastPost() {
                   type="submit"
                   disabled={isSubmitting || !formData.description.trim()}
                   size="lg"
-                  className="bg-barber-olive hover:bg-barber-gold text-white font-semibold"
+                  className="bg-doctor-olive hover:bg-doctor-gold text-white font-semibold"
                   loading={isSubmitting}>
                   {isSubmitting ? "Yuborilmoqda..." : "Post Yuborish"}
                 </Button>

@@ -33,7 +33,7 @@ function SuperAdmin() {
   const [isSubmittingEdit, setIsSubmittingEdit] = useState(false);
   const today = new Date().toISOString().split("T")[0];
   const [bookingFormData, setBookingFormData] = useState({
-    barber_id: "",
+    doctor_id: "",
     service_ids: [],
     date: today,
     time: "",
@@ -41,7 +41,7 @@ function SuperAdmin() {
     phone: "",
   });
   const [services, setServices] = useState([]);
-  const [barbers, setBarbers] = useState([]);
+  const [doctors, setdoctors] = useState([]);
   const [loadingBookingData, setLoadingBookingData] = useState(false);
   const [isSubmittingBooking, setIsSubmittingBooking] = useState(false);
 
@@ -58,7 +58,7 @@ function SuperAdmin() {
   const fetchBookingData = async () => {
     try {
       setLoadingBookingData(true);
-      const [servicesRes, barbersRes] = await Promise.all([
+      const [servicesRes, doctorsRes] = await Promise.all([
         fetch(`${API_BASE_URL}${API_ENDPOINTS.services}`, {
           method: "GET",
           headers: {
@@ -67,7 +67,7 @@ function SuperAdmin() {
           },
           mode: "cors",
         }),
-        fetch(`${API_BASE_URL}${API_ENDPOINTS.barbers}`, {
+        fetch(`${API_BASE_URL}${API_ENDPOINTS.doctors}`, {
           method: "GET",
           headers: {
             Accept: "*/*",
@@ -85,12 +85,12 @@ function SuperAdmin() {
         setServices(servicesList);
       }
 
-      if (barbersRes.ok) {
-        const barbersData = await barbersRes.json();
-        const barbersList = Array.isArray(barbersData)
-          ? barbersData
-          : barbersData.data || barbersData.barbers || [];
-        setBarbers(barbersList);
+      if (doctorsRes.ok) {
+        const doctorsData = await doctorsRes.json();
+        const doctorsList = Array.isArray(doctorsData)
+          ? doctorsData
+          : doctorsData.data || doctorsData.doctors || [];
+        setdoctors(doctorsList);
       }
     } catch (err) {
       console.error("Error fetching booking data:", err);
@@ -109,7 +109,7 @@ function SuperAdmin() {
       const today = new Date().toISOString().split("T")[0];
       const bookingData = {
         phone_number: bookingFormData.phone,
-        barber_id: parseInt(bookingFormData.barber_id),
+        doctor_id: parseInt(bookingFormData.doctor_id),
         service_ids: bookingFormData.service_ids.map((id) => parseInt(id)),
         date: bookingFormData.date || today,
         time: bookingFormData.time,
@@ -134,7 +134,7 @@ function SuperAdmin() {
       if (response.ok || response.status === 201) {
         setSuccess("Bron muvaffaqiyatli qo'shildi!");
         setBookingFormData({
-          barber_id: "",
+          doctor_id: "",
           service_ids: [],
           date: today,
           time: "",
@@ -415,7 +415,7 @@ function SuperAdmin() {
     return (
       <div className="pt-16 sm:pt-20 md:pt-[92px] min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-barber-gold mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-doctor-gold mx-auto mb-4"></div>
           <p className="text-black">Yuklanmoqda...</p>
         </div>
       </div>
@@ -456,7 +456,7 @@ function SuperAdmin() {
           <div className="mb-6">
             <Button
               onClick={() => setShowAddForm(!showAddForm)}
-              className="bg-barber-olive hover:bg-barber-gold text-white">
+              className="bg-doctor-olive hover:bg-doctor-gold text-white">
               {showAddForm ? "Formani yopish" : "+ Yangi admin qo'shish"}
             </Button>
           </div>
@@ -520,7 +520,7 @@ function SuperAdmin() {
                     type="submit"
                     disabled={isSubmitting}
                     size="lg"
-                    className="bg-barber-olive hover:bg-barber-gold text-white font-semibold"
+                    className="bg-doctor-olive hover:bg-doctor-gold text-white font-semibold"
                     loading={isSubmitting}>
                     {isSubmitting ? "Qo'shilmoqda..." : "Admin qo'shish"}
                   </Button>
@@ -550,7 +550,7 @@ function SuperAdmin() {
           <div className="bg-white rounded-2xl sm:rounded-3xl shadow-lg border border-gray-200 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-barber-dark text-white">
+                <thead className="bg-doctor-dark text-white">
                   <tr>
                     <th className="px-4 py-3 text-left text-sm font-semibold">
                       ID

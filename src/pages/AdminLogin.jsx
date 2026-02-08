@@ -149,7 +149,7 @@ function AdminLogin() {
                   type="submit"
                   disabled={isSubmitting}
                   size="lg"
-                  className="w-full bg-barber-olive hover:bg-barber-gold text-white font-semibold"
+                  className="w-full bg-doctor-olive hover:bg-doctor-gold text-white font-semibold"
                   loading={isSubmitting}>
                   {isSubmitting ? "Вход..." : "Войти"}
                 </Button>

@@ -9,7 +9,7 @@ export const translations = {
       booking: "Bron qilish",
       admin: "Admin",
       superAdmin: "Super Admin",
-      barbers: "Shifokorlar",
+      doctors: "Shifokorlar",
       users: "Foydalanuvchilar",
       services: "Xizmatlar",
       statistics: "Statistika",
@@ -79,9 +79,9 @@ export const translations = {
       welcomeToPremium: "Xatna Markazi tibbiyot markaziga xush kelibsiz",
       welcomeToPremiumDesc:
         "Bizning tibbiyot markazimizda siz professional tibbiy xizmatlar va qulay atmosfera topasiz. Bizning mutaxassislarimiz har bir bemorga individual yondashuv bilan yuqori sifatli tibbiy xizmatlar ko'rsatadi.",
-      contactBarbers:
+      contactdoctors:
         "Bepul individual maslahat uchun bizning professional shifokorlarimiz bilan bog'laning",
-      barberShop: "TIBBIYOT MARKAZI",
+      doctorShop: "TIBBIYOT MARKAZI",
       clientReviews: "Mijozlar sharhlari",
       loadingReviews: "Sharhlar yuklanmoqda...",
       noReviews: "Hozircha sharhlar yo'q",
@@ -135,8 +135,8 @@ export const translations = {
       description:
         "Toshkentdagi tajribali shifokorlar jamoamiz har bir bemorga yillik tajriba va ehtiros olib keladi. Biz eng yuqori sifatli tibbiy xizmatlarni taqdim etishga sodiqmiz.",
       bookAppointment: "VAQT BELGILASH",
-      ourBarbers: "Bizning Shifokorlarimiz",
-      loadingBarbers: "Shifokorlar yuklanmoqda...",
+      ourdoctors: "Bizning Shifokorlarimiz",
+      loadingdoctors: "Shifokorlar yuklanmoqda...",
       errorMessage: "⚠️ {error}. Standart ma'lumotlar ishlatilmoqda.",
       fullService:
         "To'liq xizmat ko'rsatadigan tibbiyot markazi",
@@ -167,7 +167,7 @@ export const translations = {
       step1: "Shifokor va vaqt",
       step2: "Xizmatlar",
       step3: "Ma'lumotlar",
-      selectBarber: "Shifokorni tanlang",
+      selectdoctor: "Shifokorni tanlang",
       selectDate: "Sanani tanlang",
       selectTime: "Vaqtni tanlang",
       selectServices: "Xizmatlarni tanlang",
@@ -179,7 +179,7 @@ export const translations = {
       telegramPlaceholder: "Telegram username kiriting",
       createBooking: "Yozilish yaratish",
       creating: "Yaratilmoqda...",
-      selectBarberDateTime: "Iltimos, shifokor, sana va vaqtni tanlang",
+      selectdoctorDateTime: "Iltimos, shifokor, sana va vaqtni tanlang",
       selectAtLeastOneService: "Iltimos, kamida bitta xizmatni tanlang",
       timeRange: "Vaqt 8:00 dan 21:00 gacha bo'lishi kerak",
       invalidTimeFormat:
@@ -216,7 +216,7 @@ export const translations = {
       booking: "Booking",
       admin: "Admin",
       superAdmin: "Super Admin",
-      barbers: "Barbers",
+      doctors: "doctors",
       users: "Users",
       services: "Services",
       statistics: "Statistics",
@@ -286,9 +286,9 @@ export const translations = {
       welcomeToPremium: "Welcome to Xatna Markazi Medical Center",
       welcomeToPremiumDesc:
         "In our medical center you will find professional medical services and a comfortable atmosphere. Our specialists provide high-quality services with an individual approach to each patient.",
-      contactBarbers:
+      contactdoctors:
         "Contact our professional doctors for a free individual consultation",
-      barberShop: "MEDICAL CENTER",
+      doctorShop: "MEDICAL CENTER",
       clientReviews: "Client Reviews",
       loadingReviews: "Loading reviews...",
       noReviews: "No reviews yet",
@@ -337,8 +337,8 @@ export const translations = {
       description:
         "Our team of experienced doctors in Tashkent brings years of experience and passion to every patient. We are committed to providing the highest quality medical services.",
       bookAppointment: "BOOK APPOINTMENT",
-      ourBarbers: "Our Doctors",
-      loadingBarbers: "Loading doctors...",
+      ourdoctors: "Our Doctors",
+      loadingdoctors: "Loading doctors...",
       errorMessage: "⚠️ {error}. Using default data.",
       fullService: "Full-service medical center",
       fullServiceDesc:
@@ -365,10 +365,10 @@ export const translations = {
     booking: {
       title: "Book Appointment",
       loading: "Loading...",
-      step1: "Barber & Time",
+      step1: "doctor & Time",
       step2: "Services",
       step3: "Details",
-      selectBarber: "Select Barber",
+      selectdoctor: "Select doctor",
       selectDate: "Select Date",
       selectTime: "Select Time",
       selectServices: "Select Services",
@@ -380,7 +380,7 @@ export const translations = {
       telegramPlaceholder: "Enter Telegram username",
       createBooking: "Create Booking",
       creating: "Creating...",
-      selectBarberDateTime: "Please select doctor, date and time",
+      selectdoctorDateTime: "Please select doctor, date and time",
       selectAtLeastOneService: "Please select at least one service",
       timeRange: "Time must be between 8:00 and 21:00",
       invalidTimeFormat:
@@ -414,7 +414,7 @@ export const translations = {
       booking: "Бронирование",
       admin: "Админ",
       superAdmin: "Супер Админ",
-      barbers: "Врачи",
+      doctors: "Врачи",
       users: "Пользователи",
       services: "Услуги",
       statistics: "Статистика",
@@ -484,9 +484,9 @@ export const translations = {
       welcomeToPremium: "Добро пожаловать в медицинский центр Xatna Markazi",
       welcomeToPremiumDesc:
         "В нашем медицинском центре вы найдете профессиональные медицинские услуги и комфортную атмосферу. Наши специалисты предоставляют высококачественные услуги с индивидуальным подходом к каждому пациенту.",
-      contactBarbers:
+      contactdoctors:
         "Свяжитесь с нашими профессиональными врачами для бесплатной индивидуальной консультации",
-      barberShop: "МЕДИЦИНСКИЙ ЦЕНТР",
+      doctorShop: "МЕДИЦИНСКИЙ ЦЕНТР",
       clientReviews: "Отзывы клиентов",
       loadingReviews: "Загрузка отзывов...",
       noReviews: "Пока нет отзывов",
@@ -537,8 +537,8 @@ export const translations = {
       description:
         "Наша команда опытных врачей в Ташкенте привносит многолетний опыт и страсть в лечение каждого пациента. Мы стремимся предоставлять медицинские услуги высочайшего качества.",
       bookAppointment: "ЗАПИСАТЬСЯ",
-      ourBarbers: "Наши Врачи",
-      loadingBarbers: "Загрузка врачей...",
+      ourdoctors: "Наши Врачи",
+      loadingdoctors: "Загрузка врачей...",
       errorMessage: "⚠️ {error}. Используются стандартные данные.",
       fullService: "Полноценный медицинский центр",
       fullServiceDesc:
@@ -568,7 +568,7 @@ export const translations = {
       step1: "Барбер и время",
       step2: "Услуги",
       step3: "Данные",
-      selectBarber: "Выберите врача",
+      selectdoctor: "Выберите врача",
       selectDate: "Выберите дату",
       selectTime: "Выберите время",
       selectServices: "Выберите услуги",
@@ -578,7 +578,7 @@ export const translations = {
       phonePlaceholder: "Введите номер телефона",
       createBooking: "Создать запись",
       creating: "Создание записи...",
-      selectBarberDateTime: "Пожалуйста, выберите врача, дату и время",
+      selectdoctorDateTime: "Пожалуйста, выберите врача, дату и время",
       selectAtLeastOneService: "Пожалуйста, выберите хотя бы одну услугу",
       timeRange: "Время должно быть с 8:00 до 21:00",
       invalidTimeFormat:

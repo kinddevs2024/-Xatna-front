@@ -140,7 +140,7 @@ function RegisterForm() {
         type="submit"
         disabled={isSubmitting}
         size="lg"
-        className="w-full bg-barber-olive hover:bg-barber-gold text-white font-semibold rounded-xl sm:rounded-2xl text-sm sm:text-base py-3 sm:py-3.5 md:py-4"
+        className="w-full bg-doctor-olive hover:bg-doctor-gold text-white font-semibold rounded-xl sm:rounded-2xl text-sm sm:text-base py-3 sm:py-3.5 md:py-4"
         loading={isSubmitting}
       >
         {isSubmitting ? getTranslation(language, "forms.registering") : getTranslation(language, "forms.register")}

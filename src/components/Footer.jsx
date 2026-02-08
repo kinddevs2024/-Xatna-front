@@ -6,7 +6,7 @@ function Footer() {
   const { language } = useLanguage();
   
   return (
-    <footer className="w-full bg-barber-dark py-6 sm:py-8 md:py-12">
+    <footer className="w-full bg-doctor-dark py-6 sm:py-8 md:py-12">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[127px]">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 mb-6 sm:mb-8">
           <div>
@@ -52,7 +52,7 @@ function Footer() {
               <span>📍 {getTranslation(language, "contact.address")}</span>
               <span className="text-xs opacity-70 ml-1">(На карте)</span>
             </a>
-            <a href={`tel:${contactInfo.phone}`} className="text-white opacity-80 hover:text-barber-gold transition-colors text-sm sm:text-base break-all">
+            <a href={`tel:${contactInfo.phone}`} className="text-white opacity-80 hover:text-doctor-gold transition-colors text-sm sm:text-base break-all">
               {contactInfo.phone}
             </a>
           </div>
@@ -62,7 +62,7 @@ function Footer() {
               href={contactInfo.instagram}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white opacity-80 hover:text-barber-gold transition-colors text-sm sm:text-base"
+              className="text-white opacity-80 hover:text-doctor-gold transition-colors text-sm sm:text-base"
             >
               Instagram
             </a>

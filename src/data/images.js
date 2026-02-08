@@ -21,6 +21,6 @@ export const getImagesInOrder = (count) => {
 };
 
 // Get all photos - using hero.jpg
-export const getAllBarberPhotos = () => {
+export const getAlldoctorPhotos = () => {
   return ["/hero.jpg"];
 };

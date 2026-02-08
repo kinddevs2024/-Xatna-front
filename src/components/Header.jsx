@@ -86,7 +86,7 @@ function Header() {
                   e.preventDefault();
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="text-sm lg:text-base font-medium transition-colors text-black dark:text-white hover:text-barber-gold"
+                className="text-sm lg:text-base font-medium transition-colors text-black dark:text-white hover:text-doctor-gold"
                 aria-label="Navigate to Home">
                 {getTranslation(language, "nav.home")}
               </a>
@@ -96,7 +96,7 @@ function Header() {
                   e.preventDefault();
                   document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="text-sm lg:text-base font-medium transition-colors text-black dark:text-white hover:text-barber-gold"
+                className="text-sm lg:text-base font-medium transition-colors text-black dark:text-white hover:text-doctor-gold"
                 aria-label="Navigate to Gallery">
                 {getTranslation(language, "nav.gallery")}
               </a>
@@ -106,7 +106,7 @@ function Header() {
                   e.preventDefault();
                   document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="text-sm lg:text-base font-medium transition-colors text-black dark:text-white hover:text-barber-gold"
+                className="text-sm lg:text-base font-medium transition-colors text-black dark:text-white hover:text-doctor-gold"
                 aria-label="Navigate to Contact">
                 {getTranslation(language, "nav.contact")}
               </a>
@@ -118,7 +118,7 @@ function Header() {
               e.preventDefault();
               document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' });
             }}
-            className="px-4 py-2 bg-barber-olive hover:bg-barber-gold text-white font-semibold rounded-lg transition-all transform hover:scale-105 shadow-md hover:shadow-lg text-sm lg:text-base"
+            className="px-4 py-2 bg-doctor-olive hover:bg-doctor-gold text-white font-semibold rounded-lg transition-all transform hover:scale-105 shadow-md hover:shadow-lg text-sm lg:text-base"
             aria-label="Navigate to Booking">
             🗓️ {getTranslation(language, "nav.booking")}
           </a>
@@ -131,8 +131,8 @@ function Header() {
                     to="/admin"
                     className={`text-sm mt-1 lg:text-base font-medium transition-colors ${
                       isActive("/admin")
-                        ? "text-barber-gold"
-                        : "text-black dark:text-white hover:text-barber-gold"
+                        ? "text-doctor-gold"
+                        : "text-black dark:text-white hover:text-doctor-gold"
                     }`}>
                     {getTranslation(language, "nav.admin")}
                   </Link>
@@ -140,8 +140,8 @@ function Header() {
                     to="/users"
                     className={`text-sm mt-1 lg:text-base font-medium transition-colors ${
                       isActive("/users")
-                        ? "text-barber-gold"
-                        : "text-black dark:text-white hover:text-barber-gold"
+                        ? "text-doctor-gold"
+                        : "text-black dark:text-white hover:text-doctor-gold"
                     }`}>
                     {getTranslation(language, "nav.users")}
                   </Link>
@@ -149,8 +149,8 @@ function Header() {
                     to="/services"
                     className={`text-sm mt-1 lg:text-base font-medium transition-colors ${
                       isActive("/services")
-                        ? "text-barber-gold"
-                        : "text-black dark:text-white hover:text-barber-gold"
+                        ? "text-doctor-gold"
+                        : "text-black dark:text-white hover:text-doctor-gold"
                     }`}>
                     {getTranslation(language, "nav.services")}
                   </Link>
@@ -158,8 +158,8 @@ function Header() {
                     to="/analytics"
                     className={`text-sm mt-1 lg:text-base font-medium transition-colors ${
                       isActive("/analytics")
-                        ? "text-barber-gold"
-                        : "text-black dark:text-white hover:text-barber-gold"
+                        ? "text-doctor-gold"
+                        : "text-black dark:text-white hover:text-doctor-gold"
                     }`}>
                     {getTranslation(language, "nav.statistics")}
                   </Link>
@@ -167,8 +167,8 @@ function Header() {
                     to="/broadcast"
                     className={`text-sm mt-1 lg:text-base font-medium transition-colors ${
                       isActive("/broadcast")
-                        ? "text-barber-gold"
-                        : "text-black dark:text-white hover:text-barber-gold"
+                        ? "text-doctor-gold"
+                        : "text-black dark:text-white hover:text-doctor-gold"
                     }`}>
                     {getTranslation(language, "nav.broadcast")}
                   </Link>
@@ -180,8 +180,8 @@ function Header() {
                     to="/admin"
                     className={`text-sm mt-1 lg:text-base font-medium transition-colors ${
                       isActive("/admin")
-                        ? "text-barber-gold"
-                        : "text-black dark:text-white hover:text-barber-gold"
+                        ? "text-doctor-gold"
+                        : "text-black dark:text-white hover:text-doctor-gold"
                     }`}>
                     {getTranslation(language, "nav.admin")}
                   </Link>
@@ -189,8 +189,8 @@ function Header() {
                     to="/users"
                     className={`text-sm mt-1 lg:text-base font-medium transition-colors ${
                       isActive("/users")
-                        ? "text-barber-gold"
-                        : "text-black dark:text-white hover:text-barber-gold"
+                        ? "text-doctor-gold"
+                        : "text-black dark:text-white hover:text-doctor-gold"
                     }`}>
                     {getTranslation(language, "nav.users")}
                   </Link>
@@ -198,8 +198,8 @@ function Header() {
                     to="/services"
                     className={`text-sm mt-1 lg:text-base font-medium transition-colors ${
                       isActive("/services")
-                        ? "text-barber-gold"
-                        : "text-black dark:text-white hover:text-barber-gold"
+                        ? "text-doctor-gold"
+                        : "text-black dark:text-white hover:text-doctor-gold"
                     }`}>
                     {getTranslation(language, "nav.services")}
                   </Link>
@@ -207,8 +207,8 @@ function Header() {
                     to="/analytics"
                     className={`text-sm mt-1 lg:text-base font-medium transition-colors ${
                       isActive("/analytics")
-                        ? "text-barber-gold"
-                        : "text-black dark:text-white hover:text-barber-gold"
+                        ? "text-doctor-gold"
+                        : "text-black dark:text-white hover:text-doctor-gold"
                     }`}>
                     {getTranslation(language, "nav.statistics")}
                   </Link>
@@ -216,8 +216,8 @@ function Header() {
                     to="/broadcast"
                     className={`text-sm mt-1 lg:text-base font-medium transition-colors ${
                       isActive("/broadcast")
-                        ? "text-barber-gold"
-                        : "text-black dark:text-white hover:text-barber-gold"
+                        ? "text-doctor-gold"
+                        : "text-black dark:text-white hover:text-doctor-gold"
                     }`}>
                     {getTranslation(language, "nav.broadcast")}
                   </Link>
@@ -229,7 +229,7 @@ function Header() {
                   logout();
                   navigate("/");
                 }}
-                className=" bg-barber-olive hover:bg-barber-gold text-white">
+                className=" bg-doctor-olive hover:bg-doctor-gold text-white">
                 {getTranslation(language, "nav.logout")}
               </Button>
             </>
@@ -238,7 +238,7 @@ function Header() {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden p-2 text-black dark:text-white hover:text-barber-gold transition-colors"
+          className="md:hidden p-2 text-black dark:text-white hover:text-doctor-gold transition-colors"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle mobile menu">
           {mobileMenuOpen ? (
@@ -265,7 +265,7 @@ function Header() {
                       closeMobileMenu();
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
-                    className="text-base font-medium py-2 text-left transition-colors text-black dark:text-white hover:text-barber-gold">
+                    className="text-base font-medium py-2 text-left transition-colors text-black dark:text-white hover:text-doctor-gold">
                     {getTranslation(language, "nav.home")}
                   </button>
                   <button
@@ -273,7 +273,7 @@ function Header() {
                       closeMobileMenu();
                       document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' });
                     }}
-                    className="text-base font-medium py-2 text-left transition-colors text-black dark:text-white hover:text-barber-gold">
+                    className="text-base font-medium py-2 text-left transition-colors text-black dark:text-white hover:text-doctor-gold">
                     {getTranslation(language, "nav.gallery")}
                   </button>
                   <button
@@ -281,7 +281,7 @@ function Header() {
                       closeMobileMenu();
                       document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                     }}
-                    className="text-base font-medium py-2 text-left transition-colors text-black dark:text-white hover:text-barber-gold">
+                    className="text-base font-medium py-2 text-left transition-colors text-black dark:text-white hover:text-doctor-gold">
                     {getTranslation(language, "nav.contact")}
                   </button>
                   <button
@@ -289,7 +289,7 @@ function Header() {
                       closeMobileMenu();
                       document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' });
                     }}
-                    className="w-full mt-2 px-4 py-3 bg-barber-olive hover:bg-barber-gold text-white font-semibold rounded-lg transition-all text-center shadow-md">
+                    className="w-full mt-2 px-4 py-3 bg-doctor-olive hover:bg-doctor-gold text-white font-semibold rounded-lg transition-all text-center shadow-md">
                     🗓️ {getTranslation(language, "nav.booking")}
                   </button>
                 </>
@@ -308,8 +308,8 @@ function Header() {
                         }}
                         className={`text-base font-medium py-2 text-left transition-colors ${
                           isActive("/admin")
-                            ? "text-barber-gold"
-                            : "text-black dark:text-white hover:text-barber-gold"
+                            ? "text-doctor-gold"
+                            : "text-black dark:text-white hover:text-doctor-gold"
                         }`}>
                         {getTranslation(language, "nav.admin")}
                       </button>
@@ -320,8 +320,8 @@ function Header() {
                         }}
                         className={`text-base font-medium py-2 text-left transition-colors ${
                           isActive("/users")
-                            ? "text-barber-gold"
-                            : "text-black dark:text-white hover:text-barber-gold"
+                            ? "text-doctor-gold"
+                            : "text-black dark:text-white hover:text-doctor-gold"
                         }`}>
                         {getTranslation(language, "nav.users")}
                       </button>
@@ -332,8 +332,8 @@ function Header() {
                         }}
                         className={`text-base font-medium py-2 text-left transition-colors ${
                           isActive("/services")
-                            ? "text-barber-gold"
-                            : "text-black dark:text-white hover:text-barber-gold"
+                            ? "text-doctor-gold"
+                            : "text-black dark:text-white hover:text-doctor-gold"
                         }`}>
                         {getTranslation(language, "nav.services")}
                       </button>
@@ -344,8 +344,8 @@ function Header() {
                         }}
                         className={`text-base font-medium py-2 text-left transition-colors ${
                           isActive("/analytics")
-                            ? "text-barber-gold"
-                            : "text-black dark:text-white hover:text-barber-gold"
+                            ? "text-doctor-gold"
+                            : "text-black dark:text-white hover:text-doctor-gold"
                         }`}>
                         {getTranslation(language, "nav.statistics")}
                       </button>
@@ -356,8 +356,8 @@ function Header() {
                         }}
                         className={`text-base font-medium py-2 text-left transition-colors ${
                           isActive("/broadcast")
-                            ? "text-barber-gold"
-                            : "text-black dark:text-white hover:text-barber-gold"
+                            ? "text-doctor-gold"
+                            : "text-black dark:text-white hover:text-doctor-gold"
                         }`}>
                         {getTranslation(language, "nav.broadcast")}
                       </button>
@@ -372,8 +372,8 @@ function Header() {
                         }}
                         className={`text-base font-medium py-2 text-left transition-colors ${
                           isActive("/admin")
-                            ? "text-barber-gold"
-                            : "text-black dark:text-white hover:text-barber-gold"
+                            ? "text-doctor-gold"
+                            : "text-black dark:text-white hover:text-doctor-gold"
                         }`}>
                         {getTranslation(language, "nav.admin")}
                       </button>
@@ -384,8 +384,8 @@ function Header() {
                         }}
                         className={`text-base font-medium py-2 text-left transition-colors ${
                           isActive("/users")
-                            ? "text-barber-gold"
-                            : "text-black dark:text-white hover:text-barber-gold"
+                            ? "text-doctor-gold"
+                            : "text-black dark:text-white hover:text-doctor-gold"
                         }`}>
                         {getTranslation(language, "nav.users")}
                       </button>
@@ -396,8 +396,8 @@ function Header() {
                         }}
                         className={`text-base font-medium py-2 text-left transition-colors ${
                           isActive("/services")
-                            ? "text-barber-gold"
-                            : "text-black dark:text-white hover:text-barber-gold"
+                            ? "text-doctor-gold"
+                            : "text-black dark:text-white hover:text-doctor-gold"
                         }`}>
                         {getTranslation(language, "nav.services")}
                       </button>
@@ -408,8 +408,8 @@ function Header() {
                         }}
                         className={`text-base font-medium py-2 text-left transition-colors ${
                           isActive("/analytics")
-                            ? "text-barber-gold"
-                            : "text-black dark:text-white hover:text-barber-gold"
+                            ? "text-doctor-gold"
+                            : "text-black dark:text-white hover:text-doctor-gold"
                         }`}>
                         {getTranslation(language, "nav.statistics")}
                       </button>
@@ -420,8 +420,8 @@ function Header() {
                         }}
                         className={`text-base font-medium py-2 text-left transition-colors ${
                           isActive("/broadcast")
-                            ? "text-barber-gold"
-                            : "text-black dark:text-white hover:text-barber-gold"
+                            ? "text-doctor-gold"
+                            : "text-black dark:text-white hover:text-doctor-gold"
                         }`}>
                         {getTranslation(language, "nav.broadcast")}
                       </button>

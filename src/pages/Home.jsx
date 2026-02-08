@@ -77,7 +77,7 @@ function Home() {
       setLoadingTimeSlots(true);
       try {
         const response = await fetch(
-          `${API_BASE_URL}/bookings/available-slots?date=${bookingFormData.date}&barber_id=1`,
+          `${API_BASE_URL}/bookings/available-slots?date=${bookingFormData.date}&doctor_id=1`,
           {
             method: "GET",
             headers: {
@@ -462,7 +462,7 @@ function Home() {
       
       const bookingData = {
         phone_number: contactInfo,
-        barber_id: 1, // Fixed medic ID (API uses barber_id)
+        doctor_id: 1, // Fixed medic ID (API uses doctor_id)
         service_ids: bookingFormData.service_ids.map((id) => parseInt(id)),
         date: bookingFormData.date,
         time: bookingFormData.time,
@@ -538,7 +538,7 @@ function Home() {
     <div>
       <Analytics />
       {/* Hero Section - Full Page */}
-      <section id="home" className="w-full h-screen relative overflow-hidden bg-barber-dark dark:bg-gray-900">
+      <section id="home" className="w-full h-screen relative overflow-hidden bg-doctor-dark dark:bg-gray-900">
         {/* Content Container */}
         <div className="relative z-10 h-full max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[126px] flex flex-col lg:flex-row items-center justify-center lg:justify-between pt-20 sm:pt-[104px] md:pt-[124px] lg:pt-0 gap-4 sm:gap-6 md:gap-8 lg:gap-12">
           {/* Image - First on Mobile, Right on Desktop */}
@@ -581,7 +581,7 @@ function Home() {
                 />
                 <a
                   href={`tel:${contactInfo.phone}`}
-                  className="hover:text-barber-gold transition-colors break-all text-white"
+                  className="hover:text-doctor-gold transition-colors break-all text-white"
                 >
                   {contactInfo.phone}
                 </a>
@@ -593,7 +593,7 @@ function Home() {
                 />
                 <a
                   href={`mailto:${contactInfo.email}`}
-                  className="hover:text-barber-gold transition-colors break-all text-white"
+                  className="hover:text-doctor-gold transition-colors break-all text-white"
                 >
                   {contactInfo.email}
                 </a>
@@ -647,7 +647,7 @@ function Home() {
 
         {/* Why Choose Us & Working Hours Section */}
         <section
-          className="w-full bg-barber-dark py-8 sm:py-10 md:py-12 lg:py-20 relative"
+          className="w-full bg-doctor-dark py-8 sm:py-10 md:py-12 lg:py-20 relative"
           data-aos="fade-up"
         >
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[127px] grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12">
@@ -769,8 +769,8 @@ function Home() {
                             }}
                             className={`p-4 rounded-lg border-2 transition-all text-left ${
                               isSelected
-                                ? "border-barber-olive bg-barber-olive/10 dark:bg-barber-olive/20"
-                                : "border-gray-300 dark:border-gray-600 hover:border-barber-olive/50"
+                                ? "border-doctor-olive bg-doctor-olive/10 dark:bg-doctor-olive/20"
+                                : "border-gray-300 dark:border-gray-600 hover:border-doctor-olive/50"
                             }`}
                           >
                             <h3 className="font-bold text-lg text-black dark:text-white mb-1">
@@ -790,7 +790,7 @@ function Home() {
                   {/* Date Selection - Visual Calendar */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
-                      <CalendarDaysIcon className="w-5 h-5 text-barber-olive" />
+                      <CalendarDaysIcon className="w-5 h-5 text-doctor-olive" />
                       <span>{getTranslation(language, "booking.selectDate")}</span>
                       {bookingFormData.date && (
                         <span className="text-xs text-gray-500 dark:text-gray-400 ml-auto">
@@ -856,10 +856,10 @@ function Home() {
                                 ${isPast 
                                   ? "text-gray-300 dark:text-gray-600 cursor-not-allowed bg-gray-100 dark:bg-gray-800 opacity-50" 
                                   : isSelected
-                                  ? "bg-barber-olive text-white shadow-lg scale-110 ring-2 ring-barber-olive ring-offset-2 font-bold"
+                                  ? "bg-doctor-olive text-white shadow-lg scale-110 ring-2 ring-doctor-olive ring-offset-2 font-bold"
                                   : isToday
-                                  ? "bg-barber-gold/30 text-barber-olive border-2 border-barber-olive font-bold hover:bg-barber-olive/20"
-                                  : "bg-white dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-barber-olive/10 hover:border-barber-olive hover:border-2 border border-gray-300 dark:border-gray-500"
+                                  ? "bg-doctor-gold/30 text-doctor-olive border-2 border-doctor-olive font-bold hover:bg-doctor-olive/20"
+                                  : "bg-white dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-doctor-olive/10 hover:border-doctor-olive hover:border-2 border border-gray-300 dark:border-gray-500"
                                 }
                               `}
                             >
@@ -888,7 +888,7 @@ function Home() {
                   {/* Time Selection - Visual Buttons */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
-                      <ClockIcon className="w-5 h-5 text-barber-olive" />
+                      <ClockIcon className="w-5 h-5 text-doctor-olive" />
                       <span>{getTranslation(language, "booking.selectTime")}</span>
                     </label>
                     <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
@@ -896,7 +896,7 @@ function Home() {
                     </p>
                     {loadingTimeSlots ? (
                       <div className="text-center py-8">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-barber-olive mx-auto mb-2"></div>
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-doctor-olive mx-auto mb-2"></div>
                         <p className="text-sm text-gray-500 dark:text-gray-400">
                           Mavjud vaqtlar yuklanmoqda...
                         </p>
@@ -919,8 +919,8 @@ function Home() {
                               className={`
                                 py-3 px-4 rounded-xl font-semibold text-base transition-all transform hover:scale-105
                                 ${isSelected
-                                  ? "bg-barber-olive text-white shadow-lg scale-105 ring-2 ring-barber-olive ring-offset-2"
-                                  : "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-barber-olive/10 hover:border-barber-olive border-2 border-gray-300 dark:border-gray-600"
+                                  ? "bg-doctor-olive text-white shadow-lg scale-105 ring-2 ring-doctor-olive ring-offset-2"
+                                  : "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-doctor-olive/10 hover:border-doctor-olive border-2 border-gray-300 dark:border-gray-600"
                                 }
                               `}
                             >
@@ -972,7 +972,7 @@ function Home() {
                     type="submit"
                     size="lg"
                     disabled={isSubmittingBooking || bookingFormData.service_ids.length === 0}
-                    className="w-full bg-barber-olive hover:bg-barber-gold text-white font-semibold"
+                    className="w-full bg-doctor-olive hover:bg-doctor-gold text-white font-semibold"
                   >
                     {isSubmittingBooking 
                       ? getTranslation(language, "booking.creating")
@@ -1051,7 +1051,7 @@ function Home() {
 
         {/* Welcome to the Medical Center Section */}
         <section
-          className="w-full bg-barber-dark py-8 sm:py-10 md:py-12 lg:py-20"
+          className="w-full bg-doctor-dark py-8 sm:py-10 md:py-12 lg:py-20"
           data-aos="fade-up"
         >
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[127px] grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-center">
@@ -1064,12 +1064,12 @@ function Home() {
                   loading="lazy"
                 />
                 {/* Decorative shapes */}
-                <div className="absolute -top-8 -left-8 sm:-top-10 sm:-left-10 w-32 h-32 sm:w-40 sm:h-40 bg-barber-gold dark:bg-barber-gold rounded-full opacity-50 dark:opacity-40"></div>
-                <div className="absolute -bottom-8 -right-8 sm:-bottom-10 sm:-right-10 w-24 h-24 sm:w-32 sm:h-32 bg-barber-accent dark:bg-barber-accent rounded-full opacity-50 dark:opacity-40"></div>
+                <div className="absolute -top-8 -left-8 sm:-top-10 sm:-left-10 w-32 h-32 sm:w-40 sm:h-40 bg-doctor-gold dark:bg-doctor-gold rounded-full opacity-50 dark:opacity-40"></div>
+                <div className="absolute -bottom-8 -right-8 sm:-bottom-10 sm:-right-10 w-24 h-24 sm:w-32 sm:h-32 bg-doctor-accent dark:bg-doctor-accent rounded-full opacity-50 dark:opacity-40"></div>
               </div>
             </div>
             <div
-              className="bg-barber-light dark:bg-gray-800 rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 lg:p-12 order-1 lg:order-2"
+              className="bg-doctor-light dark:bg-gray-800 rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 lg:p-12 order-1 lg:order-2"
               data-aos="fade-up"
             >
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black dark:text-white mb-3 sm:mb-4 md:mb-6">
@@ -1100,7 +1100,7 @@ function Home() {
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[127px] grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-center">
             <div className="order-2 lg:order-1" data-aos="fade-up">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black dark:text-white mb-4 sm:mb-6 md:mb-8 leading-tight">
-                {getTranslation(language, "home.contactBarbers")}
+                {getTranslation(language, "home.contactdoctors")}
               </h2>
               <Button
                 size="lg"
@@ -1118,13 +1118,13 @@ function Home() {
               <div className="w-full h-[300px] xs:h-[350px] sm:h-[400px] md:h-[450px] lg:h-[500px] rounded-2xl sm:rounded-3xl relative overflow-hidden">
                 <img
                   src="/hero.jpg"
-                  alt="Expert barbers at Xatna Markazi providing consultation"
+                  alt="Expert doctors at Xatna Markazi providing consultation"
                   className="w-full h-full object-cover"
                   loading="lazy"
                 />
                 {/* Decorative shapes */}
-                <div className="absolute -top-8 -left-8 sm:-top-10 sm:-left-10 w-32 h-32 sm:w-40 sm:h-40 bg-barber-gold dark:bg-barber-gold rounded-full opacity-50 dark:opacity-40"></div>
-                <div className="absolute -bottom-8 -right-8 sm:-bottom-10 sm:-right-10 w-24 h-24 sm:w-32 sm:h-32 bg-barber-accent dark:bg-barber-accent rounded-full opacity-50 dark:opacity-40"></div>
+                <div className="absolute -top-8 -left-8 sm:-top-10 sm:-left-10 w-32 h-32 sm:w-40 sm:h-40 bg-doctor-gold dark:bg-doctor-gold rounded-full opacity-50 dark:opacity-40"></div>
+                <div className="absolute -bottom-8 -right-8 sm:-bottom-10 sm:-right-10 w-24 h-24 sm:w-32 sm:h-32 bg-doctor-accent dark:bg-doctor-accent rounded-full opacity-50 dark:opacity-40"></div>
               </div>
             </div>
           </div>
@@ -1132,16 +1132,16 @@ function Home() {
 
         {/* Медицинский центр Section */}
         <section
-          className="w-full bg-barber-olive py-8 sm:py-10 md:py-12 lg:py-20"
+          className="w-full bg-doctor-olive py-8 sm:py-10 md:py-12 lg:py-20"
           data-aos="fade-up"
         >
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[127px]">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center mb-6 sm:mb-8 md:mb-12">
-              {getTranslation(language, "home.barberShop")}
+              {getTranslation(language, "home.doctorShop")}
             </h2>
             <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
               {(() => {
-                const barberShopImages = [
+                const doctorShopImages = [
                   "/hero.jpg",
                   "/hero.jpg",
                   "/hero.jpg",
@@ -1150,14 +1150,14 @@ function Home() {
                   "/hero.jpg",
                   "/hero.jpg",
                 ];
-                return barberShopImages.map((imgSrc, i) => (
+                return doctorShopImages.map((imgSrc, i) => (
                   <motion.div
                     key={i}
                     className="w-full h-[200px] xs:h-[220px] sm:h-[250px] md:h-[280px] lg:h-[300px] rounded-2xl sm:rounded-3xl overflow-hidden cursor-pointer"
                     data-aos="zoom-in"
                     data-aos-delay={i * 100}
                     whileHover={{ scale: 1.05 }}
-                    onClick={() => handleImageClick(i, barberShopImages)}
+                    onClick={() => handleImageClick(i, doctorShopImages)}
                   >
                     <img
                       src={imgSrc}
@@ -1174,7 +1174,7 @@ function Home() {
 
         {/* People Comments Section */}
         <section
-          className="w-full bg-barber-olive py-8 sm:py-10 md:py-12 lg:py-20"
+          className="w-full bg-doctor-olive py-8 sm:py-10 md:py-12 lg:py-20"
           data-aos="fade-up"
         >
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[127px]">
@@ -1198,7 +1198,7 @@ function Home() {
                     whileHover={{ y: -5 }}
                   >
                     <svg
-                      className="absolute top-4 sm:top-5 md:top-6 left-4 sm:left-5 md:left-6 w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-barber-gold"
+                      className="absolute top-4 sm:top-5 md:top-6 left-4 sm:left-5 md:left-6 w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-doctor-gold"
                       viewBox="0 0 30 30"
                       fill="none"
                       aria-hidden="true"
@@ -1209,7 +1209,7 @@ function Home() {
                       />
                     </svg>
                     <div className="flex items-center gap-3 sm:gap-4 mt-5 sm:mt-6 md:mt-8 mb-3 sm:mb-4">
-                      <div className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 bg-barber-gold rounded-full flex-shrink-0"></div>
+                      <div className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 bg-doctor-gold rounded-full flex-shrink-0"></div>
                       <h3 className="text-lg sm:text-xl font-bold text-black dark:text-white">
                         {comment.name}
                       </h3>
@@ -1233,7 +1233,7 @@ function Home() {
         {/* Gallery Section */}
         <section
           id="gallery"
-          className="w-full bg-barber-dark py-8 sm:py-10 md:py-12 lg:py-16"
+          className="w-full bg-doctor-dark py-8 sm:py-10 md:py-12 lg:py-16"
           data-aos="fade-up"
         >
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[127px]">
@@ -1299,7 +1299,7 @@ function Home() {
         </section>
 
         {/* Delivery/Contact Section */}
-        <section id="contact" className="w-full bg-gradient-to-b dark:from-gray-900 dark:to-barber-olive from-white to-barber-olive py-8 sm:py-10 md:py-12 lg:py-16" data-aos="fade-up">
+        <section id="contact" className="w-full bg-gradient-to-b dark:from-gray-900 dark:to-doctor-olive from-white to-doctor-olive py-8 sm:py-10 md:py-12 lg:py-16" data-aos="fade-up">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[127px]">
             <div className="max-w-2xl mx-auto">
               <div className="text-center mb-8 sm:mb-12" data-aos="fade-up">
@@ -1336,7 +1336,7 @@ function Home() {
                     <p className="text-gray-600 text-sm sm:text-base mb-3">
                       {getTranslation(language, "delivery.followInstagram")}
                     </p>
-                    <div className="flex items-center justify-center sm:justify-start gap-2 text-barber-olive font-semibold text-sm sm:text-base">
+                    <div className="flex items-center justify-center sm:justify-start gap-2 text-doctor-olive font-semibold text-sm sm:text-base">
                       <span>@xatna_markazi_n1</span>
                       <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -1352,7 +1352,7 @@ function Home() {
                 </h2>
                 <div className="space-y-4">
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 bg-barber-olive rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 bg-doctor-olive rounded-lg flex items-center justify-center flex-shrink-0">
                       <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -1364,7 +1364,7 @@ function Home() {
                         href={contactInfo.location.yandexMapUrl} 
                         target="_blank" 
                         rel="noopener noreferrer" 
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-barber-olive hover:bg-barber-gold text-white font-semibold rounded-lg transition-all transform hover:scale-105 shadow-md text-sm sm:text-base"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-doctor-olive hover:bg-doctor-gold text-white font-semibold rounded-lg transition-all transform hover:scale-105 shadow-md text-sm sm:text-base"
                       >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -1378,14 +1378,14 @@ function Home() {
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 bg-barber-olive rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 bg-doctor-olive rounded-lg flex items-center justify-center flex-shrink-0">
                       <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                       </svg>
                     </div>
                     <div>
                       <h3 className="font-semibold text-black mb-1">{getTranslation(language, "delivery.phone")}</h3>
-                      <a href={`tel:${contactInfo.phone}`} className="text-gray-600 hover:text-barber-olive transition-colors text-sm sm:text-base">
+                      <a href={`tel:${contactInfo.phone}`} className="text-gray-600 hover:text-doctor-olive transition-colors text-sm sm:text-base">
                         {contactInfo.phone}
                       </a>
                     </div>

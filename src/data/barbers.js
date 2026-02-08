@@ -1,5 +1,5 @@
 // Doctor data - Our medical specialists
-export const barbersData = [
+export const doctorsData = [
   {
     id: 1,
     name: "Доктор Хусанбек",

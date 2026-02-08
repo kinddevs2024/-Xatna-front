@@ -4,7 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 import { io } from "socket.io-client";
-import { API_ENDPOINTS, BOOKINGS_BASE_URL, AUTH_BASE_URL, SERVICES_BASE_URL, BARBERS_BASE_URL, SOCKET_IO_URL } from "../data/api";
+import { API_ENDPOINTS, BOOKINGS_BASE_URL, AUTH_BASE_URL, SERVICES_BASE_URL, doctorS_BASE_URL, SOCKET_IO_URL } from "../data/api";
 import { apiRequest } from "../utils/api";
 
 function Admin() {
@@ -36,7 +36,7 @@ function Admin() {
   });
   const today = new Date().toISOString().split("T")[0];
   const [bookingFormData, setBookingFormData] = useState({
-    barber_id: "",
+    doctor_id: "",
     service_ids: [],
     date: today,
     time: "",
@@ -44,7 +44,7 @@ function Admin() {
     phone: "",
   });
   const [services, setServices] = useState([]);
-  const [barbers, setBarbers] = useState([]);
+  const [doctors, setdoctors] = useState([]);
   const [loadingBookingData, setLoadingBookingData] = useState(false);
   const [isSubmittingBooking, setIsSubmittingBooking] = useState(false);
   const [showSearchModal, setShowSearchModal] = useState(false);
@@ -52,7 +52,7 @@ function Admin() {
   const [searchCriteria, setSearchCriteria] = useState({
     clientName: "",
     phone: "",
-    barberId: "",
+    doctorId: "",
     serviceId: "",
     dateFrom: "",
     dateTo: "",
@@ -74,7 +74,7 @@ function Admin() {
   const fetchBookingData = async () => {
     try {
       setLoadingBookingData(true);
-      const [servicesRes, barbersRes] = await Promise.all([
+      const [servicesRes, doctorsRes] = await Promise.all([
         fetch(`${SERVICES_BASE_URL}${API_ENDPOINTS.services}`, {
           method: "GET",
           headers: {
@@ -83,7 +83,7 @@ function Admin() {
           },
           mode: "cors",
         }),
-        fetch(`${BARBERS_BASE_URL}${API_ENDPOINTS.barbers}`, {
+        fetch(`${doctorS_BASE_URL}${API_ENDPOINTS.doctors}`, {
           method: "GET",
           headers: {
             Accept: "*/*",
@@ -101,12 +101,12 @@ function Admin() {
         setServices(servicesList);
       }
 
-      if (barbersRes.ok) {
-        const barbersData = await barbersRes.json();
-        const barbersList = Array.isArray(barbersData)
-          ? barbersData
-          : barbersData.data || barbersData.barbers || [];
-        setBarbers(barbersList);
+      if (doctorsRes.ok) {
+        const doctorsData = await doctorsRes.json();
+        const doctorsList = Array.isArray(doctorsData)
+          ? doctorsData
+          : doctorsData.data || doctorsData.doctors || [];
+        setdoctors(doctorsList);
       }
     } catch (err) {
       console.error("Error fetching booking data:", err);
@@ -130,7 +130,7 @@ function Admin() {
 
   useEffect(() => {
     // Fetch booking data when modal opens
-    if (showBookingForm && (barbers.length === 0 || services.length === 0)) {
+    if (showBookingForm && (doctors.length === 0 || services.length === 0)) {
       fetchBookingData();
     }
   }, [showBookingForm]);
@@ -273,12 +273,12 @@ function Admin() {
         : data?.booking || data;
       
       const clientName = booking?.client_name || booking?.client?.name || "N/A";
-      const barberName = booking?.barber?.name || booking?.barber_name || "N/A";
+      const doctorName = booking?.doctor?.name || booking?.doctor_name || "N/A";
       const date = booking?.date || "";
       const time = booking?.time || "";
       
       toast.success(
-        `🆕 Yangi bron qo'shildi!\n👤 ${clientName}\n💇 ${barberName}\n📅 ${date} ${time}`,
+        `🆕 Yangi bron qo'shildi!\n👤 ${clientName}\n💇 ${doctorName}\n📅 ${date} ${time}`,
         {
           duration: 5000,
           style: {
@@ -845,7 +845,7 @@ function Admin() {
     try {
       const bookingData = {
         phone_number: bookingFormData.phone,
-        barber_id: parseInt(bookingFormData.barber_id),
+        doctor_id: parseInt(bookingFormData.doctor_id),
         service_ids: bookingFormData.service_ids.map((id) => parseInt(id)),
         date: bookingFormData.date || today,
         time: bookingFormData.time,
@@ -871,9 +871,9 @@ function Admin() {
         setSuccess("Bron muvaffaqiyatli qo'shildi!");
         
         // Show toast notification
-        const barberName = barbers.find(b => String(b.id || b._id) === String(bookingData.barber_id))?.name || "N/A";
+        const doctorName = doctors.find(b => String(b.id || b._id) === String(bookingData.doctor_id))?.name || "N/A";
         toast.success(
-          `✅ Yangi bron qo'shildi!\n👤 ${bookingData.client_name}\n💇 ${barberName}\n📅 ${bookingData.date} ${bookingData.time}`,
+          `✅ Yangi bron qo'shildi!\n👤 ${bookingData.client_name}\n💇 ${doctorName}\n📅 ${bookingData.date} ${bookingData.time}`,
           {
             duration: 5000,
             style: {
@@ -887,7 +887,7 @@ function Admin() {
         );
         
         setBookingFormData({
-          barber_id: "",
+          doctor_id: "",
           service_ids: [],
           date: today,
           time: "",
@@ -959,11 +959,11 @@ function Admin() {
       });
     }
 
-    // Filter by barber/doctor
-    if (searchCriteria.barberId) {
+    // Filter by doctor/doctor
+    if (searchCriteria.doctorId) {
       filtered = filtered.filter((booking) => {
-        const barberId = booking.doctor?.id || booking.doctor_id || booking.barber?.id || booking.barber_id || booking.doctor?._id || booking.barber?._id;
-        return String(barberId) === String(searchCriteria.barberId);
+        const doctorId = booking.doctor?.id || booking.doctor_id || booking.doctor?.id || booking.doctor_id || booking.doctor?._id || booking.doctor?._id;
+        return String(doctorId) === String(searchCriteria.doctorId);
       });
     }
 
@@ -1018,7 +1018,7 @@ function Admin() {
     setSearchCriteria({
       clientName: "",
       phone: "",
-      barberId: "",
+      doctorId: "",
       serviceId: "",
       dateFrom: "",
       dateTo: "",
@@ -1090,7 +1090,7 @@ function Admin() {
     return (
       <div className="pt-16 sm:pt-20 md:pt-[92px] min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-barber-gold mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-doctor-gold mx-auto mb-4"></div>
           <p className="text-black dark:text-white">Yuklanmoqda...</p>
         </div>
       </div>
@@ -1115,7 +1115,7 @@ function Admin() {
               <Button
                 onClick={() => setShowBookingForm(true)}
                 size="sm"
-                className="bg-barber-olive hover:bg-barber-gold text-white">
+                className="bg-doctor-olive hover:bg-doctor-gold text-white">
                 + Yangi bron qo'shish
               </Button>
               <Button
@@ -1275,7 +1275,7 @@ function Admin() {
               <select
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
-                className="w-full sm:w-auto min-w-[200px] px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-barber-olive focus:border-barber-olive text-base bg-white dark:bg-gray-800 text-black dark:text-white">
+                className="w-full sm:w-auto min-w-[200px] px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-doctor-olive focus:border-doctor-olive text-base bg-white dark:bg-gray-800 text-black dark:text-white">
                 <option value="all">Barcha bronlar ({bookings.length})</option>
                 <option value="pending">Kutilmoqda</option>
                 <option value="approved">Tasdiqlangan</option>
@@ -1355,7 +1355,7 @@ function Admin() {
           <div className="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-barber-dark text-white">
+                <thead className="bg-doctor-dark text-white">
                   <tr>
                     <th className="px-4 py-3 text-left text-sm font-semibold whitespace-nowrap">
                       ID
@@ -1367,7 +1367,7 @@ function Admin() {
                       Telefon
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-semibold whitespace-nowrap">
-                      Barber
+                      doctor
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-semibold whitespace-nowrap">
                       Xizmat
@@ -1412,7 +1412,7 @@ function Admin() {
                             "N/A"}
                         </td>
                         <td className="px-4 py-3 text-sm whitespace-nowrap">
-                          {booking.doctor?.name || booking.barber?.name || booking.barber_name || booking.doctor_name || "N/A"}
+                          {booking.doctor?.name || booking.doctor?.name || booking.doctor_name || booking.doctor_name || "N/A"}
                         </td>
                         <td className="px-4 py-3 text-sm whitespace-nowrap">
                           {booking.service?.name ||
@@ -1470,7 +1470,7 @@ function Admin() {
                                   const bookingId = String(booking.id || booking._id);
                                   handleStatusChange(bookingId, e.target.value);
                                 }}
-                                className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-barber-olive focus:border-barber-olive text-xs bg-white dark:bg-gray-700 text-black dark:text-white">
+                                className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-doctor-olive focus:border-doctor-olive text-xs bg-white dark:bg-gray-700 text-black dark:text-white">
                                 <option value="pending">Kutilmoqda</option>
                                 <option value="approved">Tasdiqlangan</option>
                                 <option value="rejected">Rad etilgan</option>
@@ -1538,7 +1538,7 @@ function Admin() {
                 onClick={() => {
                   setShowBookingForm(false);
                   setBookingFormData({
-                    barber_id: "",
+                    doctor_id: "",
                     service_ids: [],
                     date: today,
                     time: "",
@@ -1555,24 +1555,24 @@ function Admin() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Barber <span className="text-red-500">*</span>
+                    doctor <span className="text-red-500">*</span>
                   </label>
                   <select
-                    value={bookingFormData.barber_id}
+                    value={bookingFormData.doctor_id}
                     onChange={(e) =>
                       setBookingFormData({
                         ...bookingFormData,
-                        barber_id: e.target.value,
+                        doctor_id: e.target.value,
                       })
                     }
                     required
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-barber-olive focus:border-barber-olive bg-white dark:bg-gray-700 text-black dark:text-white">
-                    <option value="">Barberni tanlang</option>
-                    {barbers.map((barber) => (
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-doctor-olive focus:border-doctor-olive bg-white dark:bg-gray-700 text-black dark:text-white">
+                    <option value="">doctorni tanlang</option>
+                    {doctors.map((doctor) => (
                       <option
-                        key={barber.id || barber._id}
-                        value={barber.id || barber._id}>
-                        {barber.name || barber.fullName}
+                        key={doctor.id || doctor._id}
+                        value={doctor.id || doctor._id}>
+                        {doctor.name || doctor.fullName}
                       </option>
                     ))}
                   </select>
@@ -1675,7 +1675,7 @@ function Admin() {
                         onChange={() =>
                           handleServiceToggle(service.id || service._id)
                         }
-                        className="w-4 h-4 text-barber-olive border-gray-300 dark:border-gray-600 rounded focus:ring-barber-olive bg-white dark:bg-gray-700"
+                        className="w-4 h-4 text-doctor-olive border-gray-300 dark:border-gray-600 rounded focus:ring-doctor-olive bg-white dark:bg-gray-700"
                       />
                       <span className="text-sm text-gray-700 dark:text-gray-300">
                         {service.name}
@@ -1691,7 +1691,7 @@ function Admin() {
                   onClick={() => {
                     setShowBookingForm(false);
                     setBookingFormData({
-                      barber_id: "",
+                      doctor_id: "",
                       service_ids: [],
                       date: today,
                       time: "",
@@ -1707,7 +1707,7 @@ function Admin() {
                   type="submit"
                   disabled={isSubmittingBooking || loadingBookingData}
                   size="lg"
-                  className="bg-barber-olive hover:bg-barber-gold text-white font-semibold"
+                  className="bg-doctor-olive hover:bg-doctor-gold text-white font-semibold"
                   loading={isSubmittingBooking}>
                   {isSubmittingBooking ? "Qo'shilmoqda..." : "Bron qo'shish"}
                 </Button>
@@ -1761,20 +1761,20 @@ function Admin() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Barber
+                    doctor
                   </label>
                   <select
-                    value={searchCriteria.barberId}
+                    value={searchCriteria.doctorId}
                     onChange={(e) =>
-                      handleSearchCriteriaChange("barberId", e.target.value)
+                      handleSearchCriteriaChange("doctorId", e.target.value)
                     }
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-barber-olive focus:border-barber-olive bg-white dark:bg-gray-700 text-black dark:text-white">
-                    <option value="">Barcha barberlar</option>
-                    {barbers.map((barber) => (
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-doctor-olive focus:border-doctor-olive bg-white dark:bg-gray-700 text-black dark:text-white">
+                    <option value="">Barcha doctorlar</option>
+                    {doctors.map((doctor) => (
                       <option
-                        key={barber.id || barber._id}
-                        value={barber.id || barber._id}>
-                        {barber.name || barber.fullName}
+                        key={doctor.id || doctor._id}
+                        value={doctor.id || doctor._id}>
+                        {doctor.name || doctor.fullName}
                       </option>
                     ))}
                   </select>
@@ -1789,7 +1789,7 @@ function Admin() {
                     onChange={(e) =>
                       handleSearchCriteriaChange("serviceId", e.target.value)
                     }
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-barber-olive focus:border-barber-olive bg-white dark:bg-gray-700 text-black dark:text-white">
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-doctor-olive focus:border-doctor-olive bg-white dark:bg-gray-700 text-black dark:text-white">
                     <option value="">Barcha xizmatlar</option>
                     {services.map((service) => (
                       <option
@@ -1840,7 +1840,7 @@ function Admin() {
                     onChange={(e) =>
                       handleSearchCriteriaChange("status", e.target.value)
                     }
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-barber-olive focus:border-barber-olive bg-white dark:bg-gray-700 text-black dark:text-white">
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-doctor-olive focus:border-doctor-olive bg-white dark:bg-gray-700 text-black dark:text-white">
                     <option value="">Barcha holatlar</option>
                     <option value="pending">Kutilmoqda</option>
                     <option value="approved">Tasdiqlangan</option>
@@ -1955,7 +1955,7 @@ function Admin() {
                   onChange={(e) =>
                     handleAdminFormChange("role", e.target.value)
                   }
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-barber-olive focus:border-barber-olive text-base bg-white dark:bg-gray-700 text-black dark:text-white"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-doctor-olive focus:border-doctor-olive text-base bg-white dark:bg-gray-700 text-black dark:text-white"
                   disabled={isSubmittingAdmin}>
                   <option value="admin">Admin</option>
                   <option value="super_admin">Super Admin</option>

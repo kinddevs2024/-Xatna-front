@@ -19,8 +19,8 @@ export const API_BASE_URL =
 export const AUTH_BASE_URL = import.meta.env.VITE_AUTH_BASE_URL || BASE_URL;
 export const SERVICES_BASE_URL =
   import.meta.env.VITE_SERVICES_BASE_URL || BASE_URL;
-export const BARBERS_BASE_URL =
-  import.meta.env.VITE_BARBERS_BASE_URL || BASE_URL;
+export const doctorS_BASE_URL =
+  import.meta.env.VITE_doctorS_BASE_URL || BASE_URL;
 export const BOOKINGS_BASE_URL =
   import.meta.env.VITE_BOOKINGS_BASE_URL || BASE_URL;
 export const POSTS_BASE_URL =
@@ -37,19 +37,19 @@ export const API_ENDPOINTS = {
   register: "/auth/register",
   login: "/auth/login",
   users: "/users",
-  barbers: "/users/barbers",
+  doctors: "/users/doctors",
   // Role-specific user creation endpoints
   createAdmin: "/admin",
-  createBarber: "/barber",
+  createdoctor: "/doctor",
   createClient: "/client",
-  services: "/barber-services",
+  services: "/doctor-services",
   serviceCategories: "/service-categories",
   bookings: "/bookings",
   bookingsMy: "/bookings/my",
   bookingsMultiple: "/bookings/multiple",
   bookingsPending: "/bookings/pending",
   bookingsClient: "/bookings/client",
-  bookingsBarber: "/bookings/barber",
+  bookingsdoctor: "/bookings/doctor",
   bookingsStatistics: "/bookings/admin/statistics",
   bookingApprove: "/bookings",
   bookingReject: "/bookings",

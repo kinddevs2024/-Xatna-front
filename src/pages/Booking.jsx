@@ -15,7 +15,7 @@ function Booking() {
   const { language } = useLanguage();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
-    barber_id: "",
+    doctor_id: "",
     service_ids: [], // Changed to array for multiple selection
     date: "",
     time: "",
@@ -25,12 +25,12 @@ function Booking() {
   });
   const [services, setServices] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [barbers, setBarbers] = useState([]);
+  const [doctors, setdoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-  const [selectedBarber, setSelectedBarber] = useState(null);
+  const [selecteddoctor, setSelecteddoctor] = useState(null);
   const [useCustomTime, setUseCustomTime] = useState(false);
   const [customTime, setCustomTime] = useState("");
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -81,18 +81,18 @@ function Booking() {
   // Загружаем доступные временные слоты с бэкенда при изменении даты или доктора
   useEffect(() => {
     const fetchAvailableSlots = async () => {
-      if (!formData.date || !formData.barber_id) {
+      if (!formData.date || !formData.doctor_id) {
         setAvailableTimeSlots([]);
         return;
       }
 
       setLoadingTimeSlots(true);
       try {
-        const doctorId = formData.barber_id;
+        const doctorId = formData.doctor_id;
         // Note: available-slots endpoint doesn't exist in backend yet
         // Using API_BASE_URL for correct path, but will fallback to generated slots
         const response = await fetch(
-          `${API_BASE_URL}/bookings/available-slots?date=${formData.date}&barber_id=${doctorId}`,
+          `${API_BASE_URL}/bookings/available-slots?date=${formData.date}&doctor_id=${doctorId}`,
           {
             method: "GET",
             headers: {
@@ -151,10 +151,10 @@ function Booking() {
     };
 
     fetchAvailableSlots();
-  }, [formData.date, formData.barber_id]);
+  }, [formData.date, formData.doctor_id]);
 
   useEffect(() => {
-    // Fetch services, categories, and barbers from API
+    // Fetch services, categories, and doctors from API
     const fetchData = async () => {
       try {
         console.log(
@@ -166,11 +166,11 @@ function Booking() {
           `${API_BASE_URL}${API_ENDPOINTS.serviceCategories}`
         );
         console.log(
-          "Fetching barbers from:",
-          `${API_BASE_URL}${API_ENDPOINTS.createBarber}`
+          "Fetching doctors from:",
+          `${API_BASE_URL}${API_ENDPOINTS.createdoctor}`
         );
 
-        const [servicesRes, categoriesRes, barbersRes] = await Promise.all([
+        const [servicesRes, categoriesRes, doctorsRes] = await Promise.all([
           fetchWithTimeout(
             `${API_BASE_URL}${API_ENDPOINTS.services}`,
             {
@@ -196,7 +196,7 @@ function Booking() {
             5000
           ),
           fetchWithTimeout(
-            `${API_BASE_URL}${API_ENDPOINTS.createBarber}`,
+            `${API_BASE_URL}${API_ENDPOINTS.createdoctor}`,
             {
               method: "GET",
               headers: {
@@ -211,7 +211,7 @@ function Booking() {
 
         console.log("Services response status:", servicesRes.status);
         console.log("Categories response status:", categoriesRes.status);
-        console.log("Barbers response status:", barbersRes.status);
+        console.log("doctors response status:", doctorsRes.status);
 
         if (!servicesRes.ok) {
           const errorText = await servicesRes.text();
@@ -224,19 +224,19 @@ function Booking() {
           // Categories are optional, so we don't throw an error
         }
 
-        if (!barbersRes.ok) {
-          const errorText = await barbersRes.text();
-          console.error("Barbers fetch error:", errorText);
-          throw new Error(`Failed to fetch barbers: ${barbersRes.status}`);
+        if (!doctorsRes.ok) {
+          const errorText = await doctorsRes.text();
+          console.error("doctors fetch error:", errorText);
+          throw new Error(`Failed to fetch doctors: ${doctorsRes.status}`);
         }
 
         const servicesData = await servicesRes.json();
         const categoriesData = categoriesRes.ok ? await categoriesRes.json() : [];
-        const barbersData = await barbersRes.json();
+        const doctorsData = await doctorsRes.json();
 
         console.log("Services data:", servicesData);
         console.log("Categories data:", categoriesData);
-        console.log("Barbers data:", barbersData);
+        console.log("doctors data:", doctorsData);
         
         // Debug: Log first service to see image fields
         if (servicesData && (Array.isArray(servicesData) ? servicesData : servicesData.data || servicesData.services || []).length > 0) {
@@ -295,19 +295,19 @@ function Booking() {
           : categoriesData.data || categoriesData.categories || [];
         setCategories(categoriesList);
 
-        // Handle barbers response
-        let barbersList = Array.isArray(barbersData)
-          ? barbersData
-          : barbersData.data || barbersData.barbers || [];
+        // Handle doctors response
+        let doctorsList = Array.isArray(doctorsData)
+          ? doctorsData
+          : doctorsData.data || doctorsData.doctors || [];
 
-        // Map barbers to ensure _id exists
-        const mappedBarbers = (barbersList || []).map((barber) => ({
-          ...barber,
-          _id: String(barber.id || barber._id),
-          fullName: barber.name || barber.fullName || barber.full_name,
+        // Map doctors to ensure _id exists
+        const mappeddoctors = (doctorsList || []).map((doctor) => ({
+          ...doctor,
+          _id: String(doctor.id || doctor._id),
+          fullName: doctor.name || doctor.fullName || doctor.full_name,
         }));
 
-        setBarbers(mappedBarbers);
+        setdoctors(mappeddoctors);
       } catch (err) {
         console.error("Error fetching data:", err);
         if (err.message && err.message.includes("timeout")) {
@@ -316,7 +316,7 @@ function Booking() {
           setError(getTranslation(language, "booking.failedToLoad"));
         }
         setServices([]);
-        setBarbers([]);
+        setdoctors([]);
       } finally {
         setLoading(false);
       }
@@ -358,13 +358,13 @@ function Booking() {
         }
       }
 
-      // Match API structure: phone_number, client_name, service_ids (array), barber_id, date, time
+      // Match API structure: phone_number, client_name, service_ids (array), doctor_id, date, time
       // Use phone if available, otherwise use telegram
       const contactInfo = formData.phone || formData.telegram || "";
       
       const bookingData = {
         phone_number: contactInfo,
-        barber_id: parseInt(formData.barber_id),
+        doctor_id: parseInt(formData.doctor_id),
         service_ids: formData.service_ids.map((id) => parseInt(id)), // Array of selected service IDs
         date: formData.date || today,
         time: formData.time,
@@ -392,7 +392,7 @@ function Booking() {
       if (response.ok || response.status === 201) {
         setSuccess(true);
         setFormData({
-          barber_id: "",
+          doctor_id: "",
           service_ids: [], // Reset to empty array
           date: today,
           time: "",
@@ -400,7 +400,7 @@ function Booking() {
           phone: "",
           telegram: "",
         });
-        setSelectedBarber(null);
+        setSelecteddoctor(null);
         setCurrentStep(1);
         setTimeout(() => {
           setSuccess(false);
@@ -431,10 +431,10 @@ function Booking() {
     });
     if (error) setError("");
 
-    // When barber is selected, update selectedBarber state
-    if (name === "barber_id") {
-      const barber = barbers.find((b) => String(b.id || b._id) === value);
-      setSelectedBarber(barber || null);
+    // When doctor is selected, update selecteddoctor state
+    if (name === "doctor_id") {
+      const doctor = doctors.find((b) => String(b.id || b._id) === value);
+      setSelecteddoctor(doctor || null);
     }
 
     // When time is selected from preset hours, disable custom time
@@ -562,9 +562,9 @@ function Booking() {
 
   const handleNext = () => {
     if (currentStep === 1) {
-      // Validate step 1: barber, date, and time must be selected
-      if (!formData.barber_id || !formData.date || !formData.time) {
-        setError(getTranslation(language, "booking.selectBarberDateTime"));
+      // Validate step 1: doctor, date, and time must be selected
+      if (!formData.doctor_id || !formData.date || !formData.time) {
+        setError(getTranslation(language, "booking.selectdoctorDateTime"));
         return;
       }
       setCurrentStep(2);
@@ -676,7 +676,7 @@ function Booking() {
     return (
       <div className="pt-16 sm:pt-20 md:pt-[92px] min-h-screen flex items-center justify-center bg-white dark:bg-gray-900">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-barber-gold mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-doctor-gold mx-auto mb-4"></div>
           <p className="text-black dark:text-white">{getTranslation(language, "booking.loading")}</p>
         </div>
       </div>
@@ -697,12 +697,12 @@ function Booking() {
               <div className="flex items-center space-x-4">
                 <div
                   className={`flex items-center ${
-                    currentStep >= 1 ? "text-barber-olive" : "text-gray-400 dark:text-gray-500"
+                    currentStep >= 1 ? "text-doctor-olive" : "text-gray-400 dark:text-gray-500"
                   }`}>
                   <div
                     className={`w-10 h-10 rounded-full flex items-center justify-center border-2 ${
                       currentStep >= 1
-                        ? "border-barber-olive bg-barber-olive text-white"
+                        ? "border-doctor-olive bg-doctor-olive text-white"
                         : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800"
                     }`}>
                     {currentStep > 1 ? "✓" : "1"}
@@ -713,16 +713,16 @@ function Booking() {
                 </div>
                 <div
                   className={`w-12 h-0.5 ${
-                    currentStep >= 2 ? "bg-barber-olive" : "bg-gray-300 dark:bg-gray-600"
+                    currentStep >= 2 ? "bg-doctor-olive" : "bg-gray-300 dark:bg-gray-600"
                   }`}></div>
                 <div
                   className={`flex items-center ${
-                    currentStep >= 2 ? "text-barber-olive" : "text-gray-400"
+                    currentStep >= 2 ? "text-doctor-olive" : "text-gray-400"
                   }`}>
                   <div
                     className={`w-10 h-10 rounded-full flex items-center justify-center border-2 ${
                       currentStep >= 2
-                        ? "border-barber-olive bg-barber-olive text-white"
+                        ? "border-doctor-olive bg-doctor-olive text-white"
                         : "border-gray-300 bg-white"
                     }`}>
                     {currentStep > 2 ? "✓" : "2"}
@@ -733,16 +733,16 @@ function Booking() {
                 </div>
                 <div
                   className={`w-12 h-0.5 ${
-                    currentStep >= 3 ? "bg-barber-olive" : "bg-gray-300"
+                    currentStep >= 3 ? "bg-doctor-olive" : "bg-gray-300"
                   }`}></div>
                 <div
                   className={`flex items-center ${
-                    currentStep >= 3 ? "text-barber-olive" : "text-gray-400"
+                    currentStep >= 3 ? "text-doctor-olive" : "text-gray-400"
                   }`}>
                   <div
                     className={`w-10 h-10 rounded-full flex items-center justify-center border-2 ${
                       currentStep >= 3
-                        ? "border-barber-olive bg-barber-olive text-white"
+                        ? "border-doctor-olive bg-doctor-olive text-white"
                         : "border-gray-300 bg-white"
                     }`}>
                     3
@@ -767,42 +767,42 @@ function Booking() {
             )}
 
             <div className="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 shadow-lg border border-gray-200 dark:border-gray-700">
-              {/* Step 1: Barber and Time Selection */}
+              {/* Step 1: doctor and Time Selection */}
               {currentStep === 1 && (
                 <div className="space-y-6">
                   <h2 className="text-xl sm:text-2xl font-bold text-black dark:text-white mb-4">
-                    {getTranslation(language, "booking.selectBarber")} & {getTranslation(language, "booking.selectTime")}
+                    {getTranslation(language, "booking.selectdoctor")} & {getTranslation(language, "booking.selectTime")}
                   </h2>
 
-                  {/* Barbers Selection */}
+                  {/* doctors Selection */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                      {getTranslation(language, "booking.selectBarber")}
+                      {getTranslation(language, "booking.selectdoctor")}
                     </label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {barbers.map((barber) => {
-                        const barberId = String(barber.id || barber._id);
-                        const isSelected = formData.barber_id === barberId;
+                      {doctors.map((doctor) => {
+                        const doctorId = String(doctor.id || doctor._id);
+                        const isSelected = formData.doctor_id === doctorId;
                         return (
                           <button
-                            key={barberId}
+                            key={doctorId}
                             type="button"
                             onClick={() =>
-                              handleInputChange("barber_id", barberId)
+                              handleInputChange("doctor_id", doctorId)
                             }
                             className={`p-4 rounded-lg border-2 transition-all text-left ${
                               isSelected
-                                ? "border-barber-olive bg-barber-olive/10 dark:bg-barber-olive/20"
-                                : "border-gray-300 dark:border-gray-600 hover:border-barber-olive/50"
+                                ? "border-doctor-olive bg-doctor-olive/10 dark:bg-doctor-olive/20"
+                                : "border-gray-300 dark:border-gray-600 hover:border-doctor-olive/50"
                             }`}>
                             <h3 className="font-bold text-lg text-black dark:text-white mb-1">
-                              {barber.name || barber.fullName || "Barber"}
+                              {doctor.name || doctor.fullName || "doctor"}
                             </h3>
                             <p className="text-sm text-gray-600 dark:text-gray-400">
                               Время работы: 8:00 - 21:00
                             </p>
                             {isSelected && (
-                              <p className="text-sm text-barber-olive font-semibold mt-2">
+                              <p className="text-sm text-doctor-olive font-semibold mt-2">
                                 ✓ Выбрано
                               </p>
                             )}
@@ -813,7 +813,7 @@ function Booking() {
                   </div>
 
                   {/* Date Selection Calendar */}
-                  {formData.barber_id && (
+                  {formData.doctor_id && (
                     <div className="mb-4">
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         {getTranslation(language, "booking.selectDate")}
@@ -893,12 +893,12 @@ function Booking() {
                                 disabled={isPast}
                                 className={`aspect-square rounded text-xs font-medium transition-all ${
                                   isSelected
-                                    ? "bg-barber-olive text-white shadow-md scale-105"
+                                    ? "bg-doctor-olive text-white shadow-md scale-105"
                                     : isToday
-                                    ? "bg-barber-gold/20 text-black border border-barber-gold"
+                                    ? "bg-doctor-gold/20 text-black border border-doctor-gold"
                                     : isPast
                                     ? "text-gray-300 dark:text-gray-600 cursor-not-allowed"
-                                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-barber-olive/50 border border-transparent"
+                                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-doctor-olive/50 border border-transparent"
                                 }`}>
                                 {day}
                               </button>
@@ -910,7 +910,7 @@ function Booking() {
                             <p className="text-xs text-gray-600 dark:text-gray-400">
                               Выбранная дата:
                             </p>
-                            <p className="text-sm font-bold text-barber-olive">
+                            <p className="text-sm font-bold text-doctor-olive">
                               {formatDateDisplay(formData.date)}
                             </p>
                           </div>
@@ -920,7 +920,7 @@ function Booking() {
                   )}
 
                   {/* Time Selection - Organized by Hours with Switch Buttons */}
-                  {formData.barber_id && (
+                  {formData.doctor_id && (
                     <div>
                       <div className="flex items-center justify-between mb-3">
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -931,7 +931,7 @@ function Booking() {
                           onClick={toggleCustomTime}
                           className={`text-xs px-3 py-1.5 rounded-lg transition-all ${
                             useCustomTime
-                              ? "bg-barber-olive text-white"
+                              ? "bg-doctor-olive text-white"
                               : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
                           }`}>
                           {useCustomTime ? getTranslation(language, "booking.hours") : getTranslation(language, "booking.customTime")}
@@ -942,7 +942,7 @@ function Booking() {
                         <div>
                           {loadingTimeSlots ? (
                             <div className="text-center py-8">
-                              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-barber-olive mx-auto mb-2"></div>
+                              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-doctor-olive mx-auto mb-2"></div>
                               <p className="text-sm text-gray-500 dark:text-gray-400">
                                 Mavjud vaqtlar yuklanmoqda...
                               </p>
@@ -950,7 +950,7 @@ function Booking() {
                           ) : availableTimeSlots.length === 0 ? (
                             <div className="text-center py-8">
                               <p className="text-gray-500 dark:text-gray-400">
-                                {formData.date && formData.barber_id
+                                {formData.date && formData.doctor_id
                                   ? "Bu kunda mavjud vaqtlar yo'q"
                                   : "Iltimos, avval sanani va doktorni tanlang"}
                               </p>
@@ -971,7 +971,7 @@ function Booking() {
                                     onClick={() => handleInputChange("time", time)}
                                     className={`relative px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
                                       isSelected
-                                        ? "bg-barber-olive text-white shadow-lg transform scale-105"
+                                        ? "bg-doctor-olive text-white shadow-lg transform scale-105"
                                         : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 hover:shadow-md border border-gray-300 dark:border-gray-600"
                                     }`}
                                     disabled={isSubmitting}>
@@ -986,7 +986,7 @@ function Booking() {
                                     {isSelected && (
                                       <span className="absolute -top-1 -right-1 w-5 h-5 bg-white rounded-full flex items-center justify-center">
                                         <svg
-                                          className="w-3 h-3 text-barber-olive"
+                                          className="w-3 h-3 text-doctor-olive"
                                           fill="currentColor"
                                           viewBox="0 0 20 20">
                                           <path
@@ -1023,7 +1023,7 @@ function Booking() {
                             Пожалуйста, введите время с 8:00 до 21:00
                           </p>
                           {formData.time && (
-                            <div className="p-3 bg-barber-olive/10 dark:bg-barber-olive/20 border border-barber-olive rounded-lg">
+                            <div className="p-3 bg-doctor-olive/10 dark:bg-doctor-olive/20 border border-doctor-olive rounded-lg">
                               <p className="text-sm text-gray-600 dark:text-gray-400">
                                 Выбранное время:
                               </p>
@@ -1041,9 +1041,9 @@ function Booking() {
                     <Button
                       type="button"
                       onClick={handleNext}
-                      disabled={!formData.barber_id || !formData.time}
+                      disabled={!formData.doctor_id || !formData.time}
                       size="lg"
-                      className="bg-barber-olive hover:bg-barber-gold text-white font-semibold">
+                      className="bg-doctor-olive hover:bg-doctor-gold text-white font-semibold">
                       Keyingi
                     </Button>
                   </div>
@@ -1057,12 +1057,12 @@ function Booking() {
                     {getTranslation(language, "booking.selectServices")}
                   </h2>
 
-                  {/* Selected Barber and Time Summary */}
-                  {selectedBarber && (
+                  {/* Selected doctor and Time Summary */}
+                  {selecteddoctor && (
                     <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-4">
                       <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Выбрано:</p>
                       <p className="font-semibold text-black dark:text-white">
-                        {selectedBarber.name || selectedBarber.fullName} -{" "}
+                        {selecteddoctor.name || selecteddoctor.fullName} -{" "}
                         {formData.date} {formData.time}
                       </p>
                     </div>
@@ -1086,7 +1086,7 @@ function Booking() {
                             onClick={() => setSelectedCategory("all")}
                             className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
                               selectedCategory === "all"
-                                ? "bg-barber-olive text-white shadow-md"
+                                ? "bg-doctor-olive text-white shadow-md"
                                 : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
                             }`}>
                             Все
@@ -1104,7 +1104,7 @@ function Booking() {
                                 onClick={() => setSelectedCategory(categoryId)}
                                 className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all flex items-center gap-2 ${
                                   isSelected
-                                    ? "bg-barber-olive text-white shadow-md"
+                                    ? "bg-doctor-olive text-white shadow-md"
                                     : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
                                 }`}>
                                 {category.icon && <span>{category.icon}</span>}
@@ -1164,8 +1164,8 @@ function Booking() {
                               onClick={() => handleServiceToggle(serviceId)}
                               className={`p-4 rounded-lg border-2 transition-all text-left relative overflow-hidden ${
                                 isSelected
-                                  ? "border-barber-olive bg-barber-olive/10 dark:bg-barber-olive/20"
-                                  : "border-gray-300 dark:border-gray-600 hover:border-barber-olive/50"
+                                  ? "border-doctor-olive bg-doctor-olive/10 dark:bg-doctor-olive/20"
+                                  : "border-gray-300 dark:border-gray-600 hover:border-doctor-olive/50"
                               }`}>
                               {/* Service Image */}
                               {serviceImageUrl ? (
@@ -1186,7 +1186,7 @@ function Booking() {
                               <div
                                 className={`absolute top-3 right-3 w-6 h-6 rounded border-2 flex items-center justify-center z-10 ${
                                   isSelected
-                                    ? "border-barber-olive bg-barber-olive"
+                                    ? "border-doctor-olive bg-doctor-olive"
                                     : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800"
                                 }`}>
                                 {isSelected && (
@@ -1234,7 +1234,7 @@ function Booking() {
                         formData.service_ids.length === 0
                       }
                       size="lg"
-                      className="bg-barber-olive hover:bg-barber-gold text-white font-semibold">
+                      className="bg-doctor-olive hover:bg-doctor-gold text-white font-semibold">
                       Далее
                     </Button>
                   </div>
@@ -1253,10 +1253,10 @@ function Booking() {
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                       Информация о записи:
                     </p>
-                    {selectedBarber && (
+                    {selecteddoctor && (
                       <p className="text-sm text-black dark:text-white mb-1">
                         <span className="font-semibold">Барбер:</span>{" "}
-                        {selectedBarber.name || selectedBarber.fullName}
+                        {selecteddoctor.name || selecteddoctor.fullName}
                       </p>
                     )}
                     <p className="text-sm text-black dark:text-white mb-1">
@@ -1347,7 +1347,7 @@ function Booking() {
                         isSubmitting || !formData.name || (!formData.phone && !formData.telegram)
                       }
                       size="lg"
-                      className="bg-barber-olive hover:bg-barber-gold text-white font-semibold"
+                      className="bg-doctor-olive hover:bg-doctor-gold text-white font-semibold"
                       loading={isSubmitting}>
                       {isSubmitting ? getTranslation(language, "booking.creating") : getTranslation(language, "booking.createBooking")}
                     </Button>

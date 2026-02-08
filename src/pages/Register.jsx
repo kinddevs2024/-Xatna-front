@@ -202,7 +202,7 @@ function Register() {
                   type="submit"
                   disabled={isSubmitting}
                   size="lg"
-                  className="w-full bg-barber-olive hover:bg-barber-gold text-white font-semibold"
+                  className="w-full bg-doctor-olive hover:bg-doctor-gold text-white font-semibold"
                   loading={isSubmitting}>
                   {isSubmitting
                     ? "Регистрация..."
@@ -215,7 +215,7 @@ function Register() {
                   Уже есть аккаунт?{" "}
                   <Link
                     to="/login"
-                    className="text-barber-olive hover:text-barber-gold font-semibold">
+                    className="text-doctor-olive hover:text-doctor-gold font-semibold">
                     Войдите здесь
                   </Link>
                 </p>

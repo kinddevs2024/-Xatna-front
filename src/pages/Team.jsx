@@ -14,70 +14,70 @@ import { getTranslation } from "../data/translations";
 function Team() {
   const navigate = useNavigate();
   const { language } = useLanguage();
-  const [barbers, setBarbers] = useState([]);
+  const [doctors, setdoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchBarbers = async () => {
+    const fetchdoctors = async () => {
       try {
         setLoading(true);
         setError(null);
         const response = await fetch(
-          `${API_BASE_URL}/barber`
+          `${API_BASE_URL}/doctor`
         );
 
         if (!response.ok) {
-          throw new Error("Failed to fetch barbers");
+          throw new Error("Failed to fetch doctors");
         }
 
         const data = await response.json();
         // Handle both array response and object with data property
-        let barbersList = Array.isArray(data)
+        let doctorsList = Array.isArray(data)
           ? data
-          : data.data || data.barbers || [];
+          : data.data || data.doctors || [];
         
-        barbersList = barbersList.map((barber) => {
+        doctorsList = doctorsList.map((doctor) => {
           // Get profile image from backend only
           let profileImage = null;
-          if (barber.profile_image) {
+          if (doctor.profile_image) {
             // If profile_image is a full URL, use it as is
-            if (barber.profile_image.startsWith('http://') || barber.profile_image.startsWith('https://')) {
-              profileImage = barber.profile_image;
+            if (doctor.profile_image.startsWith('http://') || doctor.profile_image.startsWith('https://')) {
+              profileImage = doctor.profile_image;
             } else {
               // If it's a relative path, construct full URL
               // Remove leading slash if present to avoid double slashes
-              const imagePath = barber.profile_image.startsWith('/') 
-                ? barber.profile_image.substring(1) 
-                : barber.profile_image;
+              const imagePath = doctor.profile_image.startsWith('/') 
+                ? doctor.profile_image.substring(1) 
+                : doctor.profile_image;
               const BASE_URL_FOR_IMAGES = API_BASE_URL.replace('/api', '');
               profileImage = `${BASE_URL_FOR_IMAGES}/${imagePath}`;
             }
           }
           
           return {
-            ...barber,
+            ...doctor,
             // Only use profile_image from backend, no fallbacks
             image: profileImage || null,
           };
         });
         
-        setBarbers(barbersList);
+        setdoctors(doctorsList);
       } catch (err) {
-        console.error("Error fetching barbers:", err);
+        console.error("Error fetching doctors:", err);
         setError(err.message);
         // Don't fallback to static data with images
-        setBarbers([]);
+        setdoctors([]);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchBarbers();
+    fetchdoctors();
   }, []);
 
-  // Use API barbers only, no static fallback
-  const displayBarbers = barbers;
+  // Use API doctors only, no static fallback
+  const displaydoctors = doctors;
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
 
   const handleRegisterModal = () => setRegisterModalOpen((cur) => !cur);
@@ -90,7 +90,7 @@ function Team() {
         data-aos="fade-up">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[127px] grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-center">
           <div className="order-2 lg:order-1" data-aos="fade-up">
-            <div className="text-xs sm:text-sm font-semibold text-barber-gold mb-3 sm:mb-4 tracking-wider">
+            <div className="text-xs sm:text-sm font-semibold text-doctor-gold mb-3 sm:mb-4 tracking-wider">
               {getTranslation(language, "team.aboutUs")}
             </div>
             <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-5xl lg:text-6xl font-bold text-black dark:text-white mb-4 sm:mb-6 md:mb-8 leading-tight">
@@ -120,18 +120,18 @@ function Team() {
         </div>
       </section>
 
-      {/* Our Barbers Section */}
+      {/* Our doctors Section */}
       <section
-        className="w-full bg-barber-olive py-8 sm:py-10 md:py-12 lg:py-16"
+        className="w-full bg-doctor-olive py-8 sm:py-10 md:py-12 lg:py-16"
         data-aos="fade-up">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[127px]">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center mb-6 sm:mb-8 md:mb-12">
-            {getTranslation(language, "team.ourBarbers")}
+            {getTranslation(language, "team.ourdoctors")}
           </h2>
 
           {loading && (
             <div className="text-center py-12">
-              <p className="text-white text-lg">{getTranslation(language, "team.loadingBarbers")}</p>
+              <p className="text-white text-lg">{getTranslation(language, "team.loadingdoctors")}</p>
             </div>
           )}
 
@@ -144,45 +144,45 @@ function Team() {
           )}
 
           <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-            {displayBarbers.map((barber, i) => {
+            {displaydoctors.map((doctor, i) => {
               // Handle both API response format and static data format
-              const barberId = barber.id || barber._id || i + 1;
-              const barberName = barber.name || barber.fullName || "Barber";
-              const barberRole =
-                barber.role || barber.position || barber.specialty || "Barber";
-              const barberDescription =
-                barber.description ||
-                barber.bio ||
-                barber.about ||
-                "Professional barber with years of experience.";
+              const doctorId = doctor.id || doctor._id || i + 1;
+              const doctorName = doctor.name || doctor.fullName || "doctor";
+              const doctorRole =
+                doctor.role || doctor.position || doctor.specialty || "doctor";
+              const doctorDescription =
+                doctor.description ||
+                doctor.bio ||
+                doctor.about ||
+                "Professional doctor with years of experience.";
               // Get profile image from backend only, no fallbacks
-              let barberImage = barber.image || null;
+              let doctorImage = doctor.image || null;
 
               return (
                 <motion.div
-                  key={barberId}
-                  className="bg-barber-dark rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 overflow-hidden"
+                  key={doctorId}
+                  className="bg-doctor-dark rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 overflow-hidden"
                   data-aos="zoom-in"
                   data-aos-delay={i * 100}
                   whileHover={{ y: -10 }}>
-                  {barberImage && (
+                  {doctorImage && (
                     <div className="w-full h-[200px] xs:h-[220px] sm:h-[250px] md:h-[280px] lg:h-[300px] rounded-xl sm:rounded-2xl mb-3 sm:mb-4 overflow-hidden">
                       <img
-                        src={barberImage}
-                        alt={barberName}
+                        src={doctorImage}
+                        alt={doctorName}
                         className="w-full h-full object-cover"
                         loading="lazy"
                       />
                     </div>
                   )}
                   <h3 className="text-base sm:text-lg md:text-xl font-bold text-white mb-1 uppercase">
-                    {barberName}
+                    {doctorName}
                   </h3>
-                  <p className="text-barber-gold mb-2 sm:mb-3 md:mb-4 text-sm sm:text-base">
-                    {barberRole}
+                  <p className="text-doctor-gold mb-2 sm:mb-3 md:mb-4 text-sm sm:text-base">
+                    {doctorRole}
                   </p>
                   <p className="text-white text-xs sm:text-sm mb-3 sm:mb-4 md:mb-6 opacity-80">
-                    {barberDescription}
+                    {doctorDescription}
                   </p>
                 </motion.div>
               );
@@ -193,7 +193,7 @@ function Team() {
 
       {/* Full Service Section */}
       <section
-        className="w-full bg-barber-dark py-8 sm:py-10 md:py-12 lg:py-16"
+        className="w-full bg-doctor-dark py-8 sm:py-10 md:py-12 lg:py-16"
         data-aos="fade-up">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[127px]">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-4 md:mb-6 text-left">

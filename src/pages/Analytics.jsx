@@ -142,7 +142,7 @@ function AnalyticsPage() {
     if (!apiData) return null;
 
     const summary = apiData.summary || {};
-    const barberStats = apiData.barber_statistics || [];
+    const doctorStats = apiData.doctor_statistics || [];
 
     // Calculate revenue by date from completed bookings
     const revenueByDate = {};
@@ -151,8 +151,8 @@ function AnalyticsPage() {
     // Service counts from all bookings (not just completed)
     const serviceCounts = {};
 
-    barberStats.forEach((barberStat) => {
-      const bookings = barberStat.bookings || [];
+    doctorStats.forEach((doctorStat) => {
+      const bookings = doctorStat.bookings || [];
       bookings.forEach((booking) => {
         // Handle single service or array of services
         const services = booking.services && Array.isArray(booking.services)
@@ -214,8 +214,8 @@ function AnalyticsPage() {
       .map(([name, count]) => ({ name, count }))
       .sort((a, b) => b.count - a.count);
 
-    // Transform barber statistics
-    const byBarbers = barberStats.map((stat) => {
+    // Transform doctor statistics
+    const bydoctors = doctorStats.map((stat) => {
       const bookings = stat.bookings || [];
       const revenue = bookings.reduce((sum, booking) => {
         if (booking.status === "completed") {
@@ -234,23 +234,23 @@ function AnalyticsPage() {
         return sum;
       }, 0);
 
-      // Count total bookings for this barber
+      // Count total bookings for this doctor
       const totalBookings = bookings.length;
 
       return {
-        name: stat.barber?.name || "N/A",
+        name: stat.doctor?.name || "N/A",
         revenue: revenue,
         totalBookings: totalBookings,
         percentage: 0,
       };
     });
 
-    const totalRevenue = byBarbers.reduce((sum, barber) => sum + barber.revenue, 0);
+    const totalRevenue = bydoctors.reduce((sum, doctor) => sum + doctor.revenue, 0);
 
     // Calculate percentages
-    byBarbers.forEach((barber) => {
-      barber.percentage = totalRevenue > 0
-        ? Math.round((barber.revenue / totalRevenue) * 100)
+    bydoctors.forEach((doctor) => {
+      doctor.percentage = totalRevenue > 0
+        ? Math.round((doctor.revenue / totalRevenue) * 100)
         : 0;
     });
 
@@ -273,7 +273,7 @@ function AnalyticsPage() {
       conversion_rate: parseFloat(conversionRate),
       revenue_over_time: revenueOverTime,
       by_services: byServices,
-      by_barbers: byBarbers,
+      by_doctors: bydoctors,
       booking_status: {
         total: totalBookings,
         completed: completedBookings,
@@ -299,7 +299,7 @@ function AnalyticsPage() {
     return (
       <div className="pt-16 sm:pt-20 md:pt-[92px] min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-barber-gold mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-doctor-gold mx-auto mb-4"></div>
           <p className="text-black">Yuklanmoqda...</p>
         </div>
       </div>
@@ -313,7 +313,7 @@ function AnalyticsPage() {
     conversion_rate: 0,
     revenue_over_time: [],
     by_services: [],
-    by_barbers: [],
+    by_doctors: [],
     booking_status: {
       total: 0,
       completed: 0,
@@ -343,7 +343,7 @@ function AnalyticsPage() {
               <Button
                 onClick={() => navigate("/admin")}
                 size="sm"
-                className="bg-barber-olive hover:bg-barber-gold text-white">
+                className="bg-doctor-olive hover:bg-doctor-gold text-white">
                 ADMIN PANELI
               </Button>
               {isSuperAdmin() && (
@@ -373,7 +373,7 @@ function AnalyticsPage() {
           {/* Date Range Selector */}
           <div className="mb-6 bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-3 mb-4">
-              <CalendarDaysIcon className="w-5 h-5 text-barber-olive" />
+              <CalendarDaysIcon className="w-5 h-5 text-doctor-olive" />
               <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
                 Vaqt oralig'ini tanlang
               </h3>
@@ -390,7 +390,7 @@ function AnalyticsPage() {
                     setDateRange({ ...dateRange, startDate: e.target.value });
                     setTimeRange("CUSTOM"); // Reset time range when manually changing dates
                   }}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-barber-olive focus:border-barber-olive transition-all bg-white dark:bg-gray-700 text-black dark:text-white"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-doctor-olive focus:border-doctor-olive transition-all bg-white dark:bg-gray-700 text-black dark:text-white"
                 />
               </div>
               <div>
@@ -404,14 +404,14 @@ function AnalyticsPage() {
                     setDateRange({ ...dateRange, endDate: e.target.value });
                     setTimeRange("CUSTOM"); // Reset time range when manually changing dates
                   }}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-barber-olive focus:border-barber-olive transition-all bg-white dark:bg-gray-700 text-black dark:text-white"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-doctor-olive focus:border-doctor-olive transition-all bg-white dark:bg-gray-700 text-black dark:text-white"
                 />
               </div>
             </div>
             <div className="mt-4">
               <Button
                 onClick={fetchStatistics}
-                className="bg-barber-olive hover:bg-barber-gold text-white">
+                className="bg-doctor-olive hover:bg-doctor-gold text-white">
                 Statistikani yangilash
               </Button>
             </div>
@@ -480,7 +480,7 @@ function AnalyticsPage() {
                     onClick={() => handleTimeRangeChange(range)}
                     className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
                       timeRange === range
-                        ? "bg-barber-olive text-white shadow-md"
+                        ? "bg-doctor-olive text-white shadow-md"
                         : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
                     }`}>
                     {range}
@@ -600,23 +600,23 @@ function AnalyticsPage() {
               )}
             </div>
 
-            {/* By Barbers */}
+            {/* By doctors */}
             <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-200 dark:border-gray-700">
               <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">
-                Barberlar bo'yicha
+                doctorlar bo'yicha
               </h3>
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                {stats.by_barbers.some(b => b.revenue > 0) 
+                {stats.by_doctors.some(b => b.revenue > 0) 
                   ? "Daromad taqsimoti" 
                   : "Bronlar taqsimoti"}
               </p>
-              {stats.by_barbers && stats.by_barbers.length > 0 ? (
+              {stats.by_doctors && stats.by_doctors.length > 0 ? (
                 <>
-                  {stats.by_barbers.some(b => b.revenue > 0) ? (
+                  {stats.by_doctors.some(b => b.revenue > 0) ? (
                     <ResponsiveContainer width="100%" height={200}>
                       <PieChart>
                         <Pie
-                          data={stats.by_barbers.filter(b => b.revenue > 0)}
+                          data={stats.by_doctors.filter(b => b.revenue > 0)}
                           cx="50%"
                           cy="50%"
                           labelLine={false}
@@ -624,7 +624,7 @@ function AnalyticsPage() {
                           outerRadius={70}
                           fill="#8884d8"
                           dataKey="revenue">
-                          {stats.by_barbers.filter(b => b.revenue > 0).map((entry, index) => (
+                          {stats.by_doctors.filter(b => b.revenue > 0).map((entry, index) => (
                             <Cell
                               key={`cell-${index}`}
                               fill={COLORS[index % COLORS.length]}
@@ -645,7 +645,7 @@ function AnalyticsPage() {
                     <ResponsiveContainer width="100%" height={200}>
                       <PieChart>
                         <Pie
-                          data={stats.by_barbers.filter(b => (b.totalBookings || 0) > 0)}
+                          data={stats.by_doctors.filter(b => (b.totalBookings || 0) > 0)}
                           cx="50%"
                           cy="50%"
                           labelLine={false}
@@ -653,7 +653,7 @@ function AnalyticsPage() {
                           outerRadius={70}
                           fill="#8884d8"
                           dataKey="totalBookings">
-                          {stats.by_barbers.filter(b => (b.totalBookings || 0) > 0).map((entry, index) => (
+                          {stats.by_doctors.filter(b => (b.totalBookings || 0) > 0).map((entry, index) => (
                             <Cell
                               key={`cell-${index}`}
                               fill={COLORS[index % COLORS.length]}
@@ -672,12 +672,12 @@ function AnalyticsPage() {
                     </ResponsiveContainer>
                   )}
                   <div className="mt-4 pt-4 border-t border-gray-200">
-                    {stats.by_barbers.some(b => b.revenue > 0) ? (
+                    {stats.by_doctors.some(b => b.revenue > 0) ? (
                       <div className="text-center mb-3">
                         <span className="text-xs text-gray-500 dark:text-gray-400">Jami daromad: </span>
                         <span className="text-sm font-bold text-gray-900 dark:text-white">
                           {formatCurrency(
-                            stats.by_barbers.reduce((sum, b) => sum + b.revenue, 0)
+                            stats.by_doctors.reduce((sum, b) => sum + b.revenue, 0)
                           )}
                         </span>
                       </div>
@@ -685,14 +685,14 @@ function AnalyticsPage() {
                       <div className="text-center mb-3">
                         <span className="text-xs text-gray-500 dark:text-gray-400">Jami bronlar: </span>
                         <span className="text-sm font-bold text-gray-900 dark:text-white">
-                          {stats.by_barbers.reduce((sum, b) => sum + (b.totalBookings || 0), 0)}
+                          {stats.by_doctors.reduce((sum, b) => sum + (b.totalBookings || 0), 0)}
                         </span>
                       </div>
                     )}
                     <div className="space-y-2">
-                      {stats.by_barbers.map((barber, index) => (
+                      {stats.by_doctors.map((doctor, index) => (
                         <div
-                          key={barber.name}
+                          key={doctor.name}
                           className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
                           <div className="flex items-center gap-2">
                             <div
@@ -701,20 +701,20 @@ function AnalyticsPage() {
                                 backgroundColor: COLORS[index % COLORS.length],
                               }}></div>
                             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                              {barber.name}
+                              {doctor.name}
                             </span>
                           </div>
                           <div className="text-right">
-                            {barber.revenue > 0 ? (
+                            {doctor.revenue > 0 ? (
                               <>
                                 <div className="text-sm font-bold text-gray-900 dark:text-white">
-                                  {formatCurrency(barber.revenue)}
+                                  {formatCurrency(doctor.revenue)}
                                 </div>
-                                <div className="text-xs text-gray-500 dark:text-gray-400">{barber.percentage}%</div>
+                                <div className="text-xs text-gray-500 dark:text-gray-400">{doctor.percentage}%</div>
                               </>
                             ) : (
                               <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                                {barber.totalBookings || 0} bron
+                                {doctor.totalBookings || 0} bron
                               </div>
                             )}
                           </div>

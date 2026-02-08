@@ -9,7 +9,7 @@ import { getTranslation } from "../data/translations";
 function Delivery() {
   const { language } = useLanguage();
   return (
-    <div className=" h-[100%] pt-16 sm:pt-20 md:pt-[92px]  bg-gradient-to-b dark:from-gray-900 dark:to-barber-olive from-white to-barber-olive">
+    <div className=" h-[100%] pt-16 sm:pt-20 md:pt-[92px]  bg-gradient-to-b dark:from-gray-900 dark:to-doctor-olive from-white to-doctor-olive">
       <section className=" h-screen  w-full py-8 sm:py-10 md:py-12 lg:py-16 pb-0" >
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[127px]">
           <div className="max-w-2xl mx-auto">
@@ -59,7 +59,7 @@ function Delivery() {
                   <p className="text-gray-600 text-sm sm:text-base mb-3">
                     {getTranslation(language, "delivery.followInstagram")}
                   </p>
-                  <div className="flex items-center justify-center sm:justify-start gap-2 text-barber-olive font-semibold text-sm sm:text-base">
+                  <div className="flex items-center justify-center sm:justify-start gap-2 text-doctor-olive font-semibold text-sm sm:text-base">
                     <span>@xatna_markazi_n1</span>
                     <svg
                       className="w-4 h-4 group-hover:translate-x-1 transition-transform"
@@ -89,7 +89,7 @@ function Delivery() {
               </h2>
               <div className="space-y-4">
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-barber-olive rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-10 h-10 bg-doctor-olive rounded-lg flex items-center justify-center flex-shrink-0">
                     <svg
                       className="w-5 h-5 text-white"
                       fill="none"
@@ -121,7 +121,7 @@ function Delivery() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-barber-olive rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-10 h-10 bg-doctor-olive rounded-lg flex items-center justify-center flex-shrink-0">
                     <svg
                       className="w-5 h-5 text-white"
                       fill="none"
@@ -142,7 +142,7 @@ function Delivery() {
                     </h3>
                     <a
                       href={`tel:${contactInfo.phone}`}
-                      className="text-gray-600 hover:text-barber-olive transition-colors text-sm sm:text-base"
+                      className="text-gray-600 hover:text-doctor-olive transition-colors text-sm sm:text-base"
                     >
                       {contactInfo.phone}
                     </a>

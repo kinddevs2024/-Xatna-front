@@ -7,10 +7,10 @@ import { API_BASE_URL, API_ENDPOINTS } from "../data/api";
 import { getAuthToken } from "../utils/api";
 import Footer from "../components/Footer";
 
-function Barbers() {
+function doctors() {
   const navigate = useNavigate();
   const { isAuthenticated, isAdmin, isSuperAdmin, logout } = useAuth();
-  const [barbers, setBarbers] = useState([]);
+  const [doctors, setdoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -26,7 +26,7 @@ function Barbers() {
     profile_image: null,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [editingBarber, setEditingBarber] = useState(null);
+  const [editingdoctor, setEditingdoctor] = useState(null);
   const [editFormData, setEditFormData] = useState({
     name: "",
     tg_username: "",
@@ -38,8 +38,8 @@ function Barbers() {
     profile_image: null,
   });
   const [isSubmittingEdit, setIsSubmittingEdit] = useState(false);
-  const [managingServicesForBarber, setManagingServicesForBarber] = useState(null);
-  const [barberServices, setBarberServices] = useState([]);
+  const [managingServicesFordoctor, setManagingServicesFordoctor] = useState(null);
+  const [doctorServices, setdoctorServices] = useState([]);
   const [loadingServices, setLoadingServices] = useState(false);
   const [editingService, setEditingService] = useState(null);
   const [editServiceFormData, setEditServiceFormData] = useState({
@@ -55,10 +55,10 @@ function Barbers() {
       return;
     }
 
-    fetchBarbers();
+    fetchdoctors();
   }, [navigate, isAuthenticated, isAdmin, isSuperAdmin]);
 
-  const fetchBarbers = async () => {
+  const fetchdoctors = async () => {
     try {
       setLoading(true);
       setError("");
@@ -68,9 +68,9 @@ function Barbers() {
         throw new Error("Token topilmadi. Iltimos, qayta kirib ko'ring.");
       }
 
-      // Fetch barbers from /users/barbers endpoint
-      console.log("Fetching barbers from:", `${BARBERS_BASE_URL}${API_ENDPOINTS.barbers}`);
-      const response = await fetch(`${BARBERS_BASE_URL}${API_ENDPOINTS.barbers}`, {
+      // Fetch doctors from /users/doctors endpoint
+      console.log("Fetching doctors from:", `${doctorS_BASE_URL}${API_ENDPOINTS.doctors}`);
+      const response = await fetch(`${doctorS_BASE_URL}${API_ENDPOINTS.doctors}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -80,33 +80,33 @@ function Barbers() {
         mode: "cors",
       });
 
-      console.log("Barbers response status:", response.status, response.statusText);
+      console.log("doctors response status:", response.status, response.statusText);
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(
           errorData.message ||
-            `Barberlarni yuklash muvaffaqiyatsiz: ${response.status}`
+            `doctorlarni yuklash muvaffaqiyatsiz: ${response.status}`
         );
       }
 
       const data = await response.json();
-      console.log("Barbers data received:", data);
+      console.log("doctors data received:", data);
 
-      const barbersList = Array.isArray(data)
+      const doctorsList = Array.isArray(data)
         ? data
-        : data.data || data.barbers || [];
+        : data.data || data.doctors || [];
 
-      setBarbers(barbersList);
+      setdoctors(doctorsList);
     } catch (err) {
-      console.error("Error fetching barbers:", err);
-      setError(err.message || "Barberlarni yuklash muvaffaqiyatsiz");
+      console.error("Error fetching doctors:", err);
+      setError(err.message || "doctorlarni yuklash muvaffaqiyatsiz");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleAddBarber = async (e) => {
+  const handleAdddoctor = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError("");
@@ -124,7 +124,7 @@ function Barbers() {
       formDataToSend.append("tg_username", formData.tg_username?.replace(/^@/, '') || formData.tg_username);
       formDataToSend.append("phone_number", formData.phone_number);
       formDataToSend.append("password", formData.password);
-      formDataToSend.append("role", "barber");
+      formDataToSend.append("role", "doctor");
       formDataToSend.append("working", formData.working.toString());
       formDataToSend.append("work_start_time", formData.work_start_time);
       formDataToSend.append("work_end_time", formData.work_end_time);
@@ -155,7 +155,7 @@ function Barbers() {
         formDataToSend.append("profile_image", fileToSend);
       }
 
-      // Create new barber using POST /users with role: "barber"
+      // Create new doctor using POST /users with role: "doctor"
       const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.users}`, {
         method: "POST",
         headers: {
@@ -170,7 +170,7 @@ function Barbers() {
       const data = await response.json();
 
       if (response.ok || response.status === 201) {
-        setSuccess("Barber muvaffaqiyatli qo'shildi!");
+        setSuccess("doctor muvaffaqiyatli qo'shildi!");
         setFormData({
           name: "",
           tg_username: "",
@@ -182,39 +182,39 @@ function Barbers() {
           profile_image: null,
         });
         setShowAddForm(false);
-        fetchBarbers(); // Refresh barber list
+        fetchdoctors(); // Refresh doctor list
         setTimeout(() => setSuccess(""), 3000);
       } else {
         setError(
-          data.message || data.error || "Barber qo'shish muvaffaqiyatsiz"
+          data.message || data.error || "doctor qo'shish muvaffaqiyatsiz"
         );
       }
     } catch (err) {
-      console.error("Error adding barber:", err);
+      console.error("Error adding doctor:", err);
       setError(err.message || "Tarmoq xatosi. Iltimos, qayta urinib ko'ring.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleEditBarber = (barber) => {
-    setEditingBarber(barber);
+  const handleEditdoctor = (doctor) => {
+    setEditingdoctor(doctor);
     setEditFormData({
-      name: barber.name || "",
-      tg_username: barber.tg_username || "",
-      phone_number: barber.phone_number || "",
+      name: doctor.name || "",
+      tg_username: doctor.tg_username || "",
+      phone_number: doctor.phone_number || "",
       password: "", // Don't pre-fill password
-      working: barber.working !== undefined ? barber.working : true,
-      work_start_time: barber.work_start_time || "09:00",
-      work_end_time: barber.work_end_time || "18:00",
+      working: doctor.working !== undefined ? doctor.working : true,
+      work_start_time: doctor.work_start_time || "09:00",
+      work_end_time: doctor.work_end_time || "18:00",
       profile_image: null,
     });
     setError("");
   };
 
-  const handleUpdateBarber = async (e) => {
+  const handleUpdatedoctor = async (e) => {
     e.preventDefault();
-    if (!editingBarber) return;
+    if (!editingdoctor) return;
 
     setIsSubmittingEdit(true);
     setError("");
@@ -226,7 +226,7 @@ function Barbers() {
         throw new Error("Token topilmadi. Iltimos, qayta kirib ko'ring.");
       }
 
-      const barberId = editingBarber.id || editingBarber._id;
+      const doctorId = editingdoctor.id || editingdoctor._id;
 
       // Create FormData for multipart/form-data
       const formDataToSend = new FormData();
@@ -269,7 +269,7 @@ function Barbers() {
       }
 
       const response = await fetch(
-        `${API_BASE_URL}/barber/${barberId}`,
+        `${API_BASE_URL}/doctor/${doctorId}`,
         {
           method: "PATCH",
           headers: {
@@ -285,8 +285,8 @@ function Barbers() {
       const data = await response.json();
 
       if (response.ok) {
-        setSuccess("Barber muvaffaqiyatli yangilandi!");
-        setEditingBarber(null);
+        setSuccess("doctor muvaffaqiyatli yangilandi!");
+        setEditingdoctor(null);
         setEditFormData({
           name: "",
           tg_username: "",
@@ -297,21 +297,21 @@ function Barbers() {
           work_end_time: "18:00",
           profile_image: null,
         });
-        fetchBarbers(); // Refresh barber list
+        fetchdoctors(); // Refresh doctor list
         setTimeout(() => setSuccess(""), 3000);
       } else {
-        setError(data.message || data.error || "Barberni yangilash muvaffaqiyatsiz");
+        setError(data.message || data.error || "doctorni yangilash muvaffaqiyatsiz");
       }
     } catch (err) {
-      console.error("Error updating barber:", err);
+      console.error("Error updating doctor:", err);
       setError(err.message || "Tarmoq xatosi. Iltimos, qayta urinib ko'ring.");
     } finally {
       setIsSubmittingEdit(false);
     }
   };
 
-  const handleDeleteBarber = async (barberId) => {
-    if (!window.confirm("Bu barberni o'chirishni xohlaysizmi?")) {
+  const handleDeletedoctor = async (doctorId) => {
+    if (!window.confirm("Bu doctorni o'chirishni xohlaysizmi?")) {
       return;
     }
 
@@ -325,7 +325,7 @@ function Barbers() {
       }
 
       const response = await fetch(
-        `${API_BASE_URL}${API_ENDPOINTS.users}/${barberId}`,
+        `${API_BASE_URL}${API_ENDPOINTS.users}/${doctorId}`,
         {
           method: "DELETE",
           headers: {
@@ -338,15 +338,15 @@ function Barbers() {
       );
 
       if (response.ok) {
-        setSuccess("Barber muvaffaqiyatli o'chirildi!");
-        fetchBarbers(); // Refresh barber list
+        setSuccess("doctor muvaffaqiyatli o'chirildi!");
+        fetchdoctors(); // Refresh doctor list
         setTimeout(() => setSuccess(""), 3000);
       } else {
         const data = await response.json().catch(() => ({}));
-        setError(data.message || "Barberni o'chirish muvaffaqiyatsiz");
+        setError(data.message || "doctorni o'chirish muvaffaqiyatsiz");
       }
     } catch (err) {
-      console.error("Error deleting barber:", err);
+      console.error("Error deleting doctor:", err);
       setError(err.message || "Tarmoq xatosi. Iltimos, qayta urinib ko'ring.");
     }
   };
@@ -369,17 +369,17 @@ function Barbers() {
     if (error) setError("");
   };
 
-  const handleManageServices = async (barber) => {
-    setManagingServicesForBarber(barber);
-    setBarberServices([]);
+  const handleManageServices = async (doctor) => {
+    setManagingServicesFordoctor(doctor);
+    setdoctorServices([]);
     setEditingService(null);
     setError("");
     
-    // Fetch services for this barber
-    await fetchBarberServices(barber.id || barber._id);
+    // Fetch services for this doctor
+    await fetchdoctorServices(doctor.id || doctor._id);
   };
 
-  const fetchBarberServices = async (barberId) => {
+  const fetchdoctorServices = async (doctorId) => {
     try {
       setLoadingServices(true);
       const token = getAuthToken();
@@ -387,7 +387,7 @@ function Barbers() {
         throw new Error("Token topilmadi");
       }
 
-      // Fetch all services and filter by barber_id if available
+      // Fetch all services and filter by doctor_id if available
       const response = await fetch(`${SERVICES_BASE_URL}${API_ENDPOINTS.services}`, {
         method: "GET",
         headers: {
@@ -404,15 +404,15 @@ function Barbers() {
           ? data
           : data.data || data.services || [];
         
-        // Filter services by barber_id if the API supports it
+        // Filter services by doctor_id if the API supports it
         // Otherwise, we'll show all services and let admin assign them
         const filtered = servicesList.filter(
-          (service) => service.barber_id === barberId || !service.barber_id
+          (service) => service.doctor_id === doctorId || !service.doctor_id
         );
-        setBarberServices(filtered);
+        setdoctorServices(filtered);
       }
     } catch (err) {
-      console.error("Error fetching barber services:", err);
+      console.error("Error fetching doctor services:", err);
       setError("Xizmatlarni yuklash muvaffaqiyatsiz");
     } finally {
       setLoadingServices(false);
@@ -431,7 +431,7 @@ function Barbers() {
 
   const handleUpdateService = async (e) => {
     e.preventDefault();
-    if (!editingService || !managingServicesForBarber) return;
+    if (!editingService || !managingServicesFordoctor) return;
 
     setIsSubmittingServiceEdit(true);
     setError("");
@@ -444,7 +444,7 @@ function Barbers() {
       }
 
       const serviceId = editingService.id || editingService._id;
-      const barberId = managingServicesForBarber.id || managingServicesForBarber._id;
+      const doctorId = managingServicesFordoctor.id || managingServicesFordoctor._id;
 
       const response = await fetch(
         `${API_BASE_URL}${API_ENDPOINTS.services}/${serviceId}`,
@@ -474,7 +474,7 @@ function Barbers() {
           price: "",
           duration: "",
         });
-        await fetchBarberServices(barberId);
+        await fetchdoctorServices(doctorId);
         setTimeout(() => setSuccess(""), 3000);
       } else {
         setError(data.message || data.error || "Xizmatni yangilash muvaffaqiyatsiz");
@@ -499,7 +499,7 @@ function Barbers() {
     return (
       <div className="pt-16 sm:pt-20 md:pt-[92px] min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-barber-gold mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-doctor-gold mx-auto mb-4"></div>
           <p className="text-black">Yuklanmoqda...</p>
         </div>
       </div>
@@ -512,13 +512,13 @@ function Barbers() {
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[127px]">
           <div className="flex justify-between items-center mb-10">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black">
-              Barberlar Boshqaruvi
+              doctorlar Boshqaruvi
             </h1>
             <div className="flex gap-3">
               <Button
                 onClick={() => navigate("/admin")}
                 size="sm"
-                className="bg-barber-olive hover:bg-barber-gold">
+                className="bg-doctor-olive hover:bg-doctor-gold">
                 Admin paneli
               </Button>
               <Button
@@ -546,18 +546,18 @@ function Barbers() {
           <div className="mb-6">
             <Button
               onClick={() => setShowAddForm(!showAddForm)}
-              className="bg-barber-olive hover:bg-barber-gold text-white">
-              {showAddForm ? "Formani yopish" : "+ Yangi barber qo'shish"}
+              className="bg-doctor-olive hover:bg-doctor-gold text-white">
+              {showAddForm ? "Formani yopish" : "+ Yangi doctor qo'shish"}
             </Button>
           </div>
 
           {showAddForm && (
             <div className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 shadow-lg border border-gray-200 mb-8">
               <h2 className="text-xl sm:text-2xl font-bold text-black mb-6">
-                Yangi barber qo'shish
+                Yangi doctor qo'shish
               </h2>
               <form
-                onSubmit={handleAddBarber}
+                onSubmit={handleAdddoctor}
                 className="space-y-4 sm:space-y-5 md:space-y-6">
                 <Input
                   type="text"
@@ -636,7 +636,7 @@ function Barbers() {
                     checked={formData.working}
                     onChange={handleInputChange}
                     id="working"
-                    className="w-4 h-4 text-barber-olive border-gray-300 rounded focus:ring-barber-olive"
+                    className="w-4 h-4 text-doctor-olive border-gray-300 rounded focus:ring-doctor-olive"
                     disabled={isSubmitting}
                   />
                   <label htmlFor="working" className="ml-2 text-sm text-gray-700">
@@ -677,7 +677,7 @@ function Barbers() {
                       });
                       setError(""); // Clear error if file is valid
                     }}
-                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-barber-olive file:text-white hover:file:bg-barber-gold"
+                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-doctor-olive file:text-white hover:file:bg-doctor-gold"
                     disabled={isSubmitting}
                   />
                 </div>
@@ -687,9 +687,9 @@ function Barbers() {
                     type="submit"
                     disabled={isSubmitting}
                     size="lg"
-                    className="bg-barber-olive hover:bg-barber-gold text-white font-semibold"
+                    className="bg-doctor-olive hover:bg-doctor-gold text-white font-semibold"
                     loading={isSubmitting}>
-                    {isSubmitting ? "Qo'shilmoqda..." : "Barber qo'shish"}
+                    {isSubmitting ? "Qo'shilmoqda..." : "doctor qo'shish"}
                   </Button>
                   <Button
                     type="button"
@@ -720,7 +720,7 @@ function Barbers() {
           <div className="bg-white rounded-2xl sm:rounded-3xl shadow-lg border border-gray-200 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-barber-dark text-white">
+                <thead className="bg-doctor-dark text-white">
                   <tr>
                     <th className="px-4 py-3 text-left text-sm font-semibold">
                       ID
@@ -746,65 +746,65 @@ function Barbers() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {barbers.length === 0 ? (
+                  {doctors.length === 0 ? (
                     <tr>
                       <td
                         colSpan="7"
                         className="px-4 py-8 text-center text-gray-500">
-                        Barberlar topilmadi
+                        doctorlar topilmadi
                       </td>
                     </tr>
                   ) : (
-                    barbers.map((barber) => (
+                    doctors.map((doctor) => (
                       <tr
-                        key={barber.id || barber._id}
+                        key={doctor.id || doctor._id}
                         className="hover:bg-gray-50">
                         <td className="px-4 py-3 text-sm">
-                          {barber.id || barber._id}
+                          {doctor.id || doctor._id}
                         </td>
                         <td className="px-4 py-3 text-sm">
-                          {barber.name || barber.fullName || "N/A"}
+                          {doctor.name || doctor.fullName || "N/A"}
                         </td>
                         <td className="px-4 py-3 text-sm">
-                          {barber.tg_username ||
-                            barber.telegram_username ||
+                          {doctor.tg_username ||
+                            doctor.telegram_username ||
                             "N/A"}
                         </td>
                         <td className="px-4 py-3 text-sm">
-                          {barber.phone_number || barber.phone || "N/A"}
+                          {doctor.phone_number || doctor.phone || "N/A"}
                         </td>
                         <td className="px-4 py-3 text-sm">
-                          {barber.work_start_time || "N/A"} -{" "}
-                          {barber.work_end_time || "N/A"}
+                          {doctor.work_start_time || "N/A"} -{" "}
+                          {doctor.work_end_time || "N/A"}
                         </td>
                         <td className="px-4 py-3 text-sm">
                           <span
                             className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                              barber.working
+                              doctor.working
                                 ? "bg-green-100 text-green-800"
                                 : "bg-gray-100 text-gray-800"
                             }`}>
-                            {barber.working ? "Ishlayapti" : "Ishlamayapti"}
+                            {doctor.working ? "Ishlayapti" : "Ishlamayapti"}
                           </span>
                         </td>
                         <td className="px-4 py-3 text-sm">
                           <div className="flex gap-2 flex-wrap">
                             <Button
                               size="sm"
-                              onClick={() => handleEditBarber(barber)}
+                              onClick={() => handleEditdoctor(doctor)}
                               className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 text-xs">
                               Tahrirlash
                             </Button>
                             <Button
                               size="sm"
-                              onClick={() => handleManageServices(barber)}
+                              onClick={() => handleManageServices(doctor)}
                               className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 text-xs">
                               Xizmatlar
                             </Button>
                             <Button
                               size="sm"
                               onClick={() =>
-                                handleDeleteBarber(barber.id || barber._id)
+                                handleDeletedoctor(doctor.id || doctor._id)
                               }
                               className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 text-xs">
                               O'chirish
@@ -822,17 +822,17 @@ function Barbers() {
       </section>
 
       {/* Manage Services Modal */}
-      {managingServicesForBarber && (
+      {managingServicesFordoctor && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-bold text-black">
-                {managingServicesForBarber.name} - Xizmatlar boshqaruvi
+                {managingServicesFordoctor.name} - Xizmatlar boshqaruvi
               </h3>
               <Button
                 onClick={() => {
-                  setManagingServicesForBarber(null);
-                  setBarberServices([]);
+                  setManagingServicesFordoctor(null);
+                  setdoctorServices([]);
                   setShowAddServiceForm(false);
                   setEditingService(null);
                   setError("");
@@ -857,7 +857,7 @@ function Barbers() {
 
             {loadingServices ? (
               <div className="text-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-barber-gold mx-auto mb-2"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-doctor-gold mx-auto mb-2"></div>
                 <p className="text-gray-600">Yuklanmoqda...</p>
               </div>
             ) : (
@@ -883,7 +883,7 @@ function Barbers() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    {barberServices.length === 0 ? (
+                    {doctorServices.length === 0 ? (
                       <tr>
                         <td
                           colSpan="5"
@@ -892,7 +892,7 @@ function Barbers() {
                         </td>
                       </tr>
                     ) : (
-                      barberServices.map((service) => (
+                      doctorServices.map((service) => (
                         <tr key={service.id || service._id} className="hover:bg-gray-50">
                           <td className="px-4 py-2 text-sm">
                             {service.id || service._id}
@@ -930,7 +930,7 @@ function Barbers() {
       )}
 
       {/* Edit Service Modal */}
-      {editingService && managingServicesForBarber && (
+      {editingService && managingServicesFordoctor && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg p-6 max-w-md w-full">
             <h4 className="text-lg font-bold text-black mb-4">
@@ -1023,12 +1023,12 @@ function Barbers() {
         </div>
       )}
 
-      {/* Edit Barber Modal */}
-      {editingBarber && (
+      {/* Edit doctor Modal */}
+      {editingdoctor && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
             <h3 className="text-lg font-bold text-black mb-4">
-              Barberni tahrirlash
+              doctorni tahrirlash
             </h3>
 
             {error && (
@@ -1037,7 +1037,7 @@ function Barbers() {
               </div>
             )}
 
-            <form onSubmit={handleUpdateBarber} className="space-y-4">
+            <form onSubmit={handleUpdatedoctor} className="space-y-4">
               <Input
                 type="text"
                 name="name"
@@ -1115,7 +1115,7 @@ function Barbers() {
                   checked={editFormData.working}
                   onChange={handleEditInputChange}
                   id="edit-working"
-                  className="w-4 h-4 text-barber-olive border-gray-300 rounded focus:ring-barber-olive"
+                  className="w-4 h-4 text-doctor-olive border-gray-300 rounded focus:ring-doctor-olive"
                   disabled={isSubmittingEdit}
                 />
                 <label
@@ -1158,7 +1158,7 @@ function Barbers() {
                     });
                     setError(""); // Clear error if file is valid
                   }}
-                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-barber-olive file:text-white hover:file:bg-barber-gold"
+                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-doctor-olive file:text-white hover:file:bg-doctor-gold"
                   disabled={isSubmittingEdit}
                 />
               </div>
@@ -1167,7 +1167,7 @@ function Barbers() {
                 <Button
                   type="button"
                   onClick={() => {
-                    setEditingBarber(null);
+                    setEditingdoctor(null);
                     setEditFormData({
                       name: "",
                       tg_username: "",
@@ -1204,6 +1204,6 @@ function Barbers() {
   );
 }
 
-export default Barbers;
+export default doctors;
 
 

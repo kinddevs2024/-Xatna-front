@@ -46,7 +46,7 @@ function Gallery() {
     <div className="pt-16 sm:pt-20 md:pt-[92px]">
       {/* Experience Section */}
       <section
-        className="w-full bg-barber-dark py-8 sm:py-10 md:py-12 lg:py-16"
+        className="w-full bg-doctor-dark py-8 sm:py-10 md:py-12 lg:py-16"
         data-aos="fade-up">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[127px]">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center mb-6 sm:mb-8 md:mb-12">
@@ -99,7 +99,7 @@ function Gallery() {
                         onClick={() => handlePageChange(page)}
                         className={`px-3 sm:px-4 py-2 rounded-lg transition-colors ${
                           currentPage === page
-                            ? "bg-white text-barber-dark font-bold"
+                            ? "bg-white text-doctor-dark font-bold"
                             : "bg-white bg-opacity-20 text-white hover:bg-opacity-30"
                         }`}>
                         {page}

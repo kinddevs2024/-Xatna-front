@@ -49,7 +49,7 @@ function LanguageSwitcher({ variant = "desktop" }) {
                 onClick={() => handleLanguageChange(lang.code)}
                 className={`relative flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg transition-all duration-200 ${
                   isActive
-                    ? "bg-barber-gold text-white shadow-md scale-105 border-2 border-barber-gold"
+                    ? "bg-doctor-gold text-white shadow-md scale-105 border-2 border-doctor-gold"
                     : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-600"
                 }`}
                 aria-label={`Switch to ${lang.name}`}
@@ -59,9 +59,9 @@ function LanguageSwitcher({ variant = "desktop" }) {
                   {lang.name}
                 </span>
                 {isActive && (
-                  <div className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-white dark:bg-gray-900 rounded-full flex items-center justify-center shadow-lg border-2 border-barber-gold">
+                  <div className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-white dark:bg-gray-900 rounded-full flex items-center justify-center shadow-lg border-2 border-doctor-gold">
                     <svg
-                      className="w-3 h-3 text-barber-gold"
+                      className="w-3 h-3 text-doctor-gold"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -86,7 +86,7 @@ function LanguageSwitcher({ variant = "desktop" }) {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-black dark:text-white hover:text-barber-gold dark:hover:text-barber-gold transition-colors rounded-md hover:bg-gray-50 dark:hover:bg-gray-800"
+        className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-black dark:text-white hover:text-doctor-gold dark:hover:text-doctor-gold transition-colors rounded-md hover:bg-gray-50 dark:hover:bg-gray-800"
         aria-label="Change language"
       >
         <span className="text-lg">{currentLanguage.flag}</span>
@@ -105,14 +105,14 @@ function LanguageSwitcher({ variant = "desktop" }) {
                 onClick={() => handleLanguageChange(lang.code)}
                 className={`w-full flex items-center gap-3 px-4 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
                   language === lang.code
-                    ? "bg-barber-gold bg-opacity-10 text-barber-gold font-medium"
+                    ? "bg-doctor-gold bg-opacity-10 text-doctor-gold font-medium"
                     : "text-black dark:text-white"
                 }`}
               >
                 <span className="text-lg">{lang.flag}</span>
                 <span>{lang.name}</span>
                 {language === lang.code && (
-                  <span className="ml-auto text-barber-gold">✓</span>
+                  <span className="ml-auto text-doctor-gold">✓</span>
                 )}
               </button>
             ))}

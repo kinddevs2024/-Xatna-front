@@ -130,7 +130,7 @@ function Login() {
                   type="submit"
                   disabled={isSubmitting}
                   size="lg"
-                  className="w-full bg-barber-olive hover:bg-barber-gold text-white font-semibold"
+                  className="w-full bg-doctor-olive hover:bg-doctor-gold text-white font-semibold"
                   loading={isSubmitting}>
                   {isSubmitting ? "Вход..." : "Войти"}
                 </Button>
@@ -141,7 +141,7 @@ function Login() {
                   Нет аккаунта?{" "}
                   <Link
                     to="/register"
-                    className="text-barber-olive hover:text-barber-gold font-semibold">
+                    className="text-doctor-olive hover:text-doctor-gold font-semibold">
                     Зарегистрируйтесь здесь
                   </Link>
                 </p>

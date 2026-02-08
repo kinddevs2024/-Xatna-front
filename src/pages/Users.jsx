@@ -46,9 +46,9 @@ function Users() {
     profile_image: null,
   });
   const [isSubmittingEdit, setIsSubmittingEdit] = useState(false);
-  const [managingServicesForBarber, setManagingServicesForBarber] =
+  const [managingServicesFordoctor, setManagingServicesFordoctor] =
     useState(null);
-  const [barberServices, setBarberServices] = useState([]);
+  const [doctorServices, setdoctorServices] = useState([]);
   const [loadingServices, setLoadingServices] = useState(false);
   const [editingService, setEditingService] = useState(null);
   const [editServiceFormData, setEditServiceFormData] = useState({
@@ -180,9 +180,9 @@ function Users() {
           }),
           password: formData.password,
         });
-      } else if (formData.role === "barber") {
-        // POST /barber - multipart/form-data
-        endpoint = `${API_BASE_URL}${API_ENDPOINTS.createBarber}`;
+      } else if (formData.role === "doctor") {
+        // POST /doctor - multipart/form-data
+        endpoint = `${API_BASE_URL}${API_ENDPOINTS.createdoctor}`;
         // Don't set Content-Type for FormData, browser will set it with boundary
         const formDataToSend = new FormData();
         formDataToSend.append("name", formData.name);
@@ -350,9 +350,9 @@ function Users() {
       let endpoint;
       let formDataToSend = new FormData();
 
-      if (userRole === "barber") {
-        // For barber: use /barber/{id} endpoint and don't include role field
-        endpoint = `${API_BASE_URL}/barber/${userId}`;
+      if (userRole === "doctor") {
+        // For doctor: use /doctor/{id} endpoint and don't include role field
+        endpoint = `${API_BASE_URL}/doctor/${userId}`;
         formDataToSend.append("name", editFormData.name);
         formDataToSend.append(
           "tg_username",
@@ -397,8 +397,8 @@ function Users() {
         formDataToSend.append("password", editFormData.password);
       }
 
-      // Add profile image if selected (for barber and client)
-      if (editFormData.profile_image && (userRole === "barber" || userRole === "client")) {
+      // Add profile image if selected (for doctor and client)
+      if (editFormData.profile_image && (userRole === "doctor" || userRole === "client")) {
         const file = editFormData.profile_image;
         const fileName = file.name.toLowerCase();
         let finalFileName = fileName;
@@ -532,9 +532,9 @@ function Users() {
       }
 
       // Конвертируем роль в верхний регистр для бэкенда (CLIENT, DOCTOR, ADMIN, SUPER_ADMIN)
-      // Также обрабатываем старые названия (barber -> DOCTOR)
+      // Также обрабатываем старые названия (doctor -> DOCTOR)
       let roleToSend = newRole.toUpperCase();
-      if (newRole.toLowerCase() === "barber") {
+      if (newRole.toLowerCase() === "doctor") {
         roleToSend = "DOCTOR";
       }
 
@@ -590,16 +590,16 @@ function Users() {
     if (error) setError("");
   };
 
-  const handleManageServices = async (barber) => {
-    setManagingServicesForBarber(barber);
-    setBarberServices([]);
+  const handleManageServices = async (doctor) => {
+    setManagingServicesFordoctor(doctor);
+    setdoctorServices([]);
     setEditingService(null);
     setError("");
 
-    await fetchBarberServices(barber.id || barber._id);
+    await fetchdoctorServices(doctor.id || doctor._id);
   };
 
-  const fetchBarberServices = async (barberId) => {
+  const fetchdoctorServices = async (doctorId) => {
     try {
       setLoadingServices(true);
       const token = getAuthToken();
@@ -627,12 +627,12 @@ function Users() {
           : data.data || data.services || [];
 
         const filtered = servicesList.filter(
-          (service) => service.barber_id === barberId || !service.barber_id
+          (service) => service.doctor_id === doctorId || !service.doctor_id
         );
-        setBarberServices(filtered);
+        setdoctorServices(filtered);
       }
     } catch (err) {
-      console.error("Error fetching barber services:", err);
+      console.error("Error fetching doctor services:", err);
       setError("Xizmatlarni yuklash muvaffaqiyatsiz");
     } finally {
       setLoadingServices(false);
@@ -651,7 +651,7 @@ function Users() {
 
   const handleUpdateService = async (e) => {
     e.preventDefault();
-    if (!editingService || !managingServicesForBarber) return;
+    if (!editingService || !managingServicesFordoctor) return;
 
     setIsSubmittingServiceEdit(true);
     setError("");
@@ -664,8 +664,8 @@ function Users() {
       }
 
       const serviceId = editingService.id || editingService._id;
-      const barberId =
-        managingServicesForBarber.id || managingServicesForBarber._id;
+      const doctorId =
+        managingServicesFordoctor.id || managingServicesFordoctor._id;
 
       const response = await fetch(
         `${API_BASE_URL}${API_ENDPOINTS.services}/${serviceId}`,
@@ -695,7 +695,7 @@ function Users() {
           price: "",
           duration: "",
         });
-        await fetchBarberServices(barberId);
+        await fetchdoctorServices(doctorId);
         setTimeout(() => setSuccess(""), 3000);
       } else {
         setError(
@@ -722,7 +722,7 @@ function Users() {
     const labels = {
       client: "Foydalanuvchi",
       doctor: "Doktor",
-      barber: "Doktor", // Для обратной совместимости
+      doctor: "Doktor", // Для обратной совместимости
       admin: "Admin",
       super_admin: "Super Admin",
       // Также поддерживаем верхний регистр (из бэкенда)
@@ -738,7 +738,7 @@ function Users() {
     const colors = {
       client: "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300",
       doctor: "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300",
-      barber: "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300", // Для обратной совместимости
+      doctor: "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300", // Для обратной совместимости
       admin: "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300",
       super_admin: "bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300",
       // Также поддерживаем верхний регистр (из бэкенда)
@@ -756,9 +756,9 @@ function Users() {
     : users.filter((u) => {
         const userRole = (u.role || "").toLowerCase();
         const filterRole = roleFilter.toLowerCase();
-        // Поддержка старых названий (barber -> doctor)
-        if (filterRole === "barber" || filterRole === "doctor") {
-          return userRole === "barber" || userRole === "doctor" || u.role === "DOCTOR";
+        // Поддержка старых названий (doctor -> doctor)
+        if (filterRole === "doctor" || filterRole === "doctor") {
+          return userRole === "doctor" || userRole === "doctor" || u.role === "DOCTOR";
         }
         return userRole === filterRole || u.role === filterRole.toUpperCase();
       });
@@ -767,7 +767,7 @@ function Users() {
     return (
       <div className="pt-16 sm:pt-20 md:pt-[92px] min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-barber-gold mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-doctor-gold mx-auto mb-4"></div>
           <p className="text-black dark:text-white">Yuklanmoqda...</p>
         </div>
       </div>
@@ -788,7 +788,7 @@ function Users() {
               <Button
                 onClick={() => navigate("/admin")}
                 size="sm"
-                className="bg-barber-olive hover:bg-barber-gold"
+                className="bg-doctor-olive hover:bg-doctor-gold"
               >
                 Admin paneli
               </Button>
@@ -818,7 +818,7 @@ function Users() {
           <div className="mb-6 flex gap-4 items-center flex-wrap">
             <Button
               onClick={() => setShowAddForm(!showAddForm)}
-              className="bg-barber-olive hover:bg-barber-gold text-white"
+              className="bg-doctor-olive hover:bg-doctor-gold text-white"
             >
               {showAddForm
                 ? "Formani yopish"
@@ -838,7 +838,7 @@ function Users() {
                   <Option value="all">Barchasi</Option>
                   <Option value="client">Foydalanuvchi</Option>
                   <Option value="doctor">Doktor</Option>
-                  <Option value="barber">Doktor (eski)</Option>
+                  <Option value="doctor">Doktor (eski)</Option>
                   <Option value="admin">Admin</Option>
                   <Option value="super_admin">Super Admin</Option>
                 </Select>
@@ -885,7 +885,7 @@ function Users() {
                   onChange={handleInputChange}
                   label="Telefon raqami"
                   placeholder="+998901234567"
-                  required={formData.role !== "barber"}
+                  required={formData.role !== "doctor"}
                   size="lg"
                   disabled={isSubmitting}
                 />
@@ -920,7 +920,7 @@ function Users() {
                   </Select>
                 </div>
 
-                {formData.role === "barber" && (
+                {formData.role === "doctor" && (
                   <>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <Input
@@ -995,7 +995,7 @@ function Users() {
                       });
                       setError("");
                     }}
-                    className="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-barber-olive file:text-white hover:file:bg-barber-gold"
+                    className="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-doctor-olive file:text-white hover:file:bg-doctor-gold"
                     disabled={isSubmitting}
                   />
                 </div>
@@ -1005,7 +1005,7 @@ function Users() {
                     type="submit"
                     disabled={isSubmitting}
                     size="lg"
-                    className="bg-barber-olive hover:bg-barber-gold text-white font-semibold"
+                    className="bg-doctor-olive hover:bg-doctor-gold text-white font-semibold"
                     loading={isSubmitting}
                   >
                     {isSubmitting
@@ -1043,7 +1043,7 @@ function Users() {
           <div className="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-barber-dark text-white">
+                <thead className="bg-doctor-dark text-white">
                   <tr>
                     <th className="px-4 py-3 text-left text-sm font-semibold">
                       ID
@@ -1060,7 +1060,7 @@ function Users() {
                     <th className="px-2 py-3 text-left text-sm font-semibold w-[120px]">
                       Rol
                     </th>
-                    {(roleFilter === "doctor" || roleFilter === "barber" || roleFilter === "all") && (
+                    {(roleFilter === "doctor" || roleFilter === "doctor" || roleFilter === "all") && (
                       <th className="px-4 py-3 text-left text-sm font-semibold">
                         Ish vaqti
                       </th>
@@ -1075,7 +1075,7 @@ function Users() {
                     <tr>
                       <td
                         colSpan={
-                          roleFilter === "barber" || roleFilter === "all"
+                          roleFilter === "doctor" || roleFilter === "all"
                             ? "7"
                             : "6"
                         }
@@ -1135,9 +1135,9 @@ function Users() {
                             )}
                           </div>
                         </td>
-                        {(roleFilter === "doctor" || roleFilter === "barber" || roleFilter === "all") && (
+                        {(roleFilter === "doctor" || roleFilter === "doctor" || roleFilter === "all") && (
                           <td className="px-4 py-3 text-sm text-black dark:text-white">
-                            {(user.role === "doctor" || user.role === "barber" || user.role === "DOCTOR") ? (
+                            {(user.role === "doctor" || user.role === "doctor" || user.role === "DOCTOR") ? (
                               `${user.work_start_time || "N/A"} - ${
                                 user.work_end_time || "N/A"
                               }`
@@ -1155,7 +1155,7 @@ function Users() {
                             >
                               Tahrirlash
                             </Button>
-                            {user.role === "barber" && (
+                            {user.role === "doctor" && (
                               <Button
                                 size="sm"
                                 onClick={() => handleManageServices(user)}
@@ -1186,17 +1186,17 @@ function Users() {
       </section>
 
       {/* Manage Services Modal */}
-      {managingServicesForBarber && (
+      {managingServicesFordoctor && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-bold text-black dark:text-white">
-                {managingServicesForBarber.name} - Xizmatlar boshqaruvi
+                {managingServicesFordoctor.name} - Xizmatlar boshqaruvi
               </h3>
               <Button
                 onClick={() => {
-                  setManagingServicesForBarber(null);
-                  setBarberServices([]);
+                  setManagingServicesFordoctor(null);
+                  setdoctorServices([]);
                   setEditingService(null);
                   setError("");
                 }}
@@ -1221,7 +1221,7 @@ function Users() {
 
             {loadingServices ? (
               <div className="text-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-barber-gold mx-auto mb-2"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-doctor-gold mx-auto mb-2"></div>
                 <p className="text-gray-600 dark:text-gray-400">Yuklanmoqda...</p>
               </div>
             ) : (
@@ -1247,7 +1247,7 @@ function Users() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                    {barberServices.length === 0 ? (
+                    {doctorServices.length === 0 ? (
                       <tr>
                         <td
                           colSpan="5"
@@ -1257,7 +1257,7 @@ function Users() {
                         </td>
                       </tr>
                     ) : (
-                      barberServices.map((service) => (
+                      doctorServices.map((service) => (
                         <tr
                           key={service.id || service._id}
                           className="hover:bg-gray-50 dark:hover:bg-gray-700"
@@ -1299,7 +1299,7 @@ function Users() {
       )}
 
       {/* Edit Service Modal */}
-      {editingService && managingServicesForBarber && (
+      {editingService && managingServicesFordoctor && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full">
             <h4 className="text-lg font-bold text-black dark:text-white mb-4">
@@ -1461,7 +1461,7 @@ function Users() {
                 </Select>
               </div>
 
-              {editFormData.role === "barber" && (
+              {editFormData.role === "doctor" && (
                 <>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <Input
@@ -1542,7 +1542,7 @@ function Users() {
                     });
                     setError("");
                   }}
-                  className="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-barber-olive file:text-white hover:file:bg-barber-gold"
+                  className="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-doctor-olive file:text-white hover:file:bg-doctor-gold"
                   disabled={isSubmittingEdit}
                 />
               </div>

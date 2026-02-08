@@ -13,11 +13,11 @@ export default withMT({
     extend: {
       colors: {
         // Новая цветовая палитра Xatna Markazi
-        'barber-gold': '#499BED',      // Яркий средний синий - для акцентов и hover
-        'barber-olive': '#022E5B',     // Глубокий темно-синий - для кнопок и основных элементов
-        'barber-dark': '#031725',      // Очень темный синий - для фонов и заголовков
-        'barber-light': '#DAEAFF',     // Очень светлый бледно-синий - для светлых фонов
-        'barber-accent': '#A1C6F6',    // Светлый пастельный синий - для дополнительных акцентов
+        'doctor-gold': '#499BED',      // Яркий средний синий - для акцентов и hover
+        'doctor-olive': '#022E5B',     // Глубокий темно-синий - для кнопок и основных элементов
+        'doctor-dark': '#031725',      // Очень темный синий - для фонов и заголовков
+        'doctor-light': '#DAEAFF',     // Очень светлый бледно-синий - для светлых фонов
+        'doctor-accent': '#A1C6F6',    // Светлый пастельный синий - для дополнительных акцентов
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],

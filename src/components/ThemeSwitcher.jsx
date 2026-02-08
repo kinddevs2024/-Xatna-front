@@ -31,7 +31,7 @@ function ThemeSwitcher() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-black dark:text-white hover:text-barber-gold dark:hover:text-barber-gold transition-colors rounded-md hover:bg-gray-50 dark:hover:bg-gray-800"
+        className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-black dark:text-white hover:text-doctor-gold dark:hover:text-doctor-gold transition-colors rounded-md hover:bg-gray-50 dark:hover:bg-gray-800"
         aria-label="Change theme"
       >
         {theme === "light" ? (
@@ -49,28 +49,28 @@ function ThemeSwitcher() {
               onClick={() => handleThemeChange("light")}
               className={`w-full flex items-center gap-3 px-4 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
                 theme === "light"
-                  ? "bg-barber-gold bg-opacity-10 text-barber-gold font-medium"
+                  ? "bg-doctor-gold bg-opacity-10 text-doctor-gold font-medium"
                   : "text-black dark:text-white"
               }`}
             >
               <SunIcon className="w-5 h-5" />
               <span>Light</span>
               {theme === "light" && (
-                <span className="ml-auto text-barber-gold">✓</span>
+                <span className="ml-auto text-doctor-gold">✓</span>
               )}
             </button>
             <button
               onClick={() => handleThemeChange("dark")}
               className={`w-full flex items-center gap-3 px-4 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
                 theme === "dark"
-                  ? "bg-barber-gold bg-opacity-10 text-barber-gold font-medium"
+                  ? "bg-doctor-gold bg-opacity-10 text-doctor-gold font-medium"
                   : "text-black dark:text-white"
               }`}
             >
               <MoonIcon className="w-5 h-5" />
               <span>Dark</span>
               {theme === "dark" && (
-                <span className="ml-auto text-barber-gold">✓</span>
+                <span className="ml-auto text-doctor-gold">✓</span>
               )}
             </button>
           </div>

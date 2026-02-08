@@ -49,7 +49,7 @@ function Services() {
         throw new Error("Token topilmadi. Iltimos, qayta kirib ko'ring.");
       }
 
-      // Fetch services from /barber-services endpoint
+      // Fetch services from /doctor-services endpoint
       console.log("Fetching services from:", `${API_BASE_URL}${API_ENDPOINTS.services}`);
       const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.services}`, {
         method: "GET",
@@ -168,7 +168,7 @@ function Services() {
         formDataToSend.append("image_url", fileToSend);
       }
 
-      // Create new service using POST /barber-services
+      // Create new service using POST /doctor-services
       const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.services}`, {
         method: "POST",
         headers: {
@@ -473,7 +473,7 @@ function Services() {
     return (
       <div className="pt-16 sm:pt-20 md:pt-[92px] min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-barber-gold mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-doctor-gold mx-auto mb-4"></div>
           <p className="text-black dark:text-white">Yuklanmoqda...</p>
         </div>
       </div>
@@ -492,7 +492,7 @@ function Services() {
               <Button
                 onClick={() => navigate("/admin")}
                 size="sm"
-                className="bg-barber-olive hover:bg-barber-gold">
+                className="bg-doctor-olive hover:bg-doctor-gold">
                 Admin paneli
               </Button>
               <Button
@@ -520,7 +520,7 @@ function Services() {
           <div className="mb-6">
             <Button
               onClick={() => setShowAddForm(!showAddForm)}
-              className="bg-barber-olive hover:bg-barber-gold text-white">
+              className="bg-doctor-olive hover:bg-doctor-gold text-white">
               {showAddForm ? "Formani yopish" : "+ Yangi xizmat qo'shish"}
             </Button>
           </div>
@@ -567,7 +567,7 @@ function Services() {
                     name="image_url"
                     accept="image/jpeg,image/png,image/jpg,image/gif,.jpg,.jpeg,.png,.gif"
                     onChange={handleInputChange}
-                    className="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-barber-olive file:text-white hover:file:bg-barber-gold"
+                    className="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-doctor-olive file:text-white hover:file:bg-doctor-gold"
                     disabled={isSubmitting}
                   />
                 </div>
@@ -577,7 +577,7 @@ function Services() {
                     type="submit"
                     disabled={isSubmitting}
                     size="lg"
-                    className="bg-barber-olive hover:bg-barber-gold text-white font-semibold"
+                    className="bg-doctor-olive hover:bg-doctor-gold text-white font-semibold"
                     loading={isSubmitting}>
                     {isSubmitting ? "Qo'shilmoqda..." : "Xizmat qo'shish"}
                   </Button>
@@ -605,7 +605,7 @@ function Services() {
           <div className="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-barber-dark text-white">
+                <thead className="bg-doctor-dark text-white">
                   <tr>
                     <th className="px-4 py-3 text-left text-sm font-semibold">
                       ID
@@ -761,7 +761,7 @@ function Services() {
                   name="image_url"
                   accept="image/jpeg,image/png,image/jpg,image/gif,.jpg,.jpeg,.png,.gif"
                   onChange={handleEditInputChange}
-                  className="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-barber-olive file:text-white hover:file:bg-barber-gold"
+                  className="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-doctor-olive file:text-white hover:file:bg-doctor-gold"
                   disabled={isSubmittingEdit}
                 />
                 <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
